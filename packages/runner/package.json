@@ -1,0 +1,45 @@
+{
+  "name": "@stellar-agent-kit/runner",
+  "version": "0.1.0-alpha.1",
+  "description": "Autonomous and scheduled agent loop with layered safety controls (allowlist, spend caps, network sandbox, human-in-loop, dry-run). Stellar-native protections via smart-account policies layered on top.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --dts --clean --format esm --out-dir dist",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "peerDependencies": {
+    "@stellar-agent-kit/core": "workspace:*",
+    "@stellar/stellar-sdk": "^14.0.0-rc.3",
+    "ai": "^4.0.0"
+  },
+  "devDependencies": {
+    "@stellar-agent-kit/core": "workspace:*",
+    "@stellar/stellar-sdk": "^14.0.0-rc.3",
+    "ai": "^4.0.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -38,3 +38,12 @@ export {
   escrowDispute,
 };
 export { TrustlessWorkClient } from "./client";
+export {
+  createTrustlessWorkWebhookHandler,
+  expressTrustlessWorkWebhook,
+  nextTrustlessWorkWebhook,
+  type TrustlessWorkEvent,
+  type TrustlessWorkWebhookOptions,
+  type TrustlessWorkWebhookResult,
+  type RawTrustlessWorkHandler,
+} from "./webhooks";

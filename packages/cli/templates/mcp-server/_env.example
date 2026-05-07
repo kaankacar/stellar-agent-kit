@@ -1,0 +1,4 @@
+STELLAR_SECRET_KEY=S...
+# STELLAR_NETWORK=mainnet  # default: testnet
+# STELLAR_RPC_URL=https://your-mainnet-rpc
+# SOROSWAP_API_KEY=

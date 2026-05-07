@@ -13,6 +13,7 @@ export {
   type SendTxResult,
 } from "./utils/send_tx";
 export { InMemoryKVStore } from "./utils/kvStore";
+export { withIdempotency, DEFAULT_IDEMPOTENCY_TTL_MS } from "./utils/idempotency";
 export type {
   Action,
   ActionExample,

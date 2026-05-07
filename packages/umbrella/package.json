@@ -1,0 +1,67 @@
+{
+  "name": "stellar-agent-kit",
+  "version": "0.1.0-alpha.1",
+  "description": "All-in-one entry point for the Stellar Agent Kit — re-exports core, all plugins, runner, and adapters. For granular installs, use the @stellar-agent-kit/* scoped packages.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./core": {
+      "types": "./dist/core.d.ts",
+      "import": "./dist/core.js"
+    },
+    "./plugins": {
+      "types": "./dist/plugins.d.ts",
+      "import": "./dist/plugins.js"
+    },
+    "./runner": {
+      "types": "./dist/runner.d.ts",
+      "import": "./dist/runner.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@stellar-agent-kit/core": "workspace:*",
+    "@stellar-agent-kit/plugin-asset": "workspace:*",
+    "@stellar-agent-kit/plugin-soroban": "workspace:*",
+    "@stellar-agent-kit/plugin-defi": "workspace:*",
+    "@stellar-agent-kit/plugin-data": "workspace:*",
+    "@stellar-agent-kit/plugin-payments": "workspace:*",
+    "@stellar-agent-kit/plugin-anchor": "workspace:*",
+    "@stellar-agent-kit/plugin-defindex": "workspace:*",
+    "@stellar-agent-kit/plugin-smart-wallet": "workspace:*",
+    "@stellar-agent-kit/plugin-domain": "workspace:*",
+    "@stellar-agent-kit/plugin-trustless-work": "workspace:*",
+    "@stellar-agent-kit/plugin-bridge": "workspace:*",
+    "@stellar-agent-kit/plugin-nft": "workspace:*",
+    "@stellar-agent-kit/runner": "workspace:*",
+    "@stellar-agent-kit/adapter-mcp": "workspace:*"
+  },
+  "peerDependencies": {
+    "@stellar/stellar-sdk": "^14.0.0-rc.3"
+  },
+  "devDependencies": {
+    "@stellar/stellar-sdk": "^14.0.0-rc.3",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

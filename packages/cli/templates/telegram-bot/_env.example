@@ -1,0 +1,21 @@
+# Stellar wallet
+STELLAR_SECRET_KEY=S...
+STELLAR_NETWORK=testnet
+# STELLAR_NETWORK=mainnet
+
+# LLM provider — set ONE
+OPENROUTER_API_KEY=sk-or-v1-...
+# OPENAI_API_KEY=sk-...
+# ANTHROPIC_API_KEY=sk-ant-...
+
+# Optional
+BRAVE_API_KEY=
+COINGECKO_API_KEY=
+ETHERFUSE_API_KEY=
+
+# Telegram — both required
+TELEGRAM_BOT_TOKEN=...
+TELEGRAM_USER_ID=...
+
+# Mainnet hardening — required to start the agent on mainnet
+# STELLAR_AGENT_I_UNDERSTAND_THE_RISK=1

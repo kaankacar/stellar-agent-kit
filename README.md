@@ -2,7 +2,7 @@
 
 Connect any AI agent to Stellar / Soroban. A TypeScript SDK with a plugin architecture and adapters for **LangChain, Vercel AI SDK, OpenAI tool-calling, and Anthropic tool-calling**.
 
-> **Status:** `v0.1.0-alpha.1` — pre-release. 14 packages (core + 12 plugins/adapters), 86 tests, ~80 agent actions, end-to-end verified on testnet.
+> **Status:** `v0.1.0-alpha.1` — pre-release. 16 packages (core + 12 plugins/adapters + runner + CLI scaffolder), 116 tests, ~80 agent actions + autonomous-agent runner, end-to-end verified on testnet.
 
 ## Why
 
@@ -26,6 +26,8 @@ The Stellar ecosystem has rich on-chain primitives for payments, DeFi, anchors (
 | `@stellar-agent-kit/plugin-bridge` | 3 | Cross-chain bridging via Allbridge Core: list tokens · quote · build raw tx |
 | `@stellar-agent-kit/plugin-nft` | 9 | OpenZeppelin Stellar NFT trait: mint, transfer, approve, burn, balance / owner / token-uri / collection-info / **royalty info (ERC-2981)** |
 | `@stellar-agent-kit/adapter-mcp` | — | Expose the kit as a Model Context Protocol server (Claude Code, Cursor) |
+| `@stellar-agent-kit/runner` | — | **Autonomous + scheduled agent loops** with layered safety: action allowlist, per-asset spend caps, network sandbox, human-in-loop, dry-run. Vercel AI SDK as LLM abstraction. |
+| `create-stellar-agent` | — | **`npx create-stellar-agent <name>`** scaffolder. Templates: `remittance-mx`, `agentic-defi`, `mcp-server`, `autonomous-runner`. |
 
 ## Quickstart
 
@@ -119,13 +121,44 @@ Provider URL defaults:
 
 BlindPay's `createCustomer` requires a browser-side ToS redirect + full KYC PII that can't be done from a single server call — the action throws `NOT_IMPLEMENTED_v01` with a pointer to the canonical reference flow. Use `generateTosUrl()` directly to start.
 
+## Autonomous agents
+
+```bash
+npx create-stellar-agent my-bot --template=autonomous-runner
+```
+
+A 60-second path to a running, testnet-sandboxed autonomous Stellar agent driven by a free OpenRouter LLM. The kit's `runner` package wires layered safety controls (allowlist + spend caps + network sandbox + human-in-loop + dry-run) so the agent's blast radius is bounded by code, not by trust in the LLM. See [`AUTONOMOUS_AGENTS.md`](./AUTONOMOUS_AGENTS.md) for the full guide.
+
+Companion repo: [`stellar-agent-kit-skills`](https://github.com/stellar/stellar-agent-kit-skills) — Claude Code / Codex / Cursor agent-skills with curated playbooks for `stellar-remittance-mx`, `stellar-autonomous-agent`, `stellar-x402-monetize`.
+
+## Webhooks (production hardening)
+
+Both `plugin-anchor` and `plugin-trustless-work` ship framework-agnostic webhook handlers (Express / Next App Router / Hono adapters) with HMAC-SHA256 signature verification. State-changing actions (e.g. `ASSET_TRANSFER`) accept an optional `idempotencyKey` to make retries safe.
+
+```ts
+import { expressAnchorWebhook } from "@stellar-agent-kit/plugin-anchor";
+
+app.post(
+  "/webhooks/etherfuse",
+  express.raw({ type: "application/json" }),
+  expressAnchorWebhook({
+    provider: "etherfuse",
+    verify: { secret: process.env.ETHERFUSE_WEBHOOK_SECRET! },
+    onEvent: async (event) => {
+      if (event.type === "kyc.approved") await markCustomerReady(event.customerId);
+      if (event.type === "onramp.completed") await notifyUserOfDeposit(event.orderId);
+    },
+  }),
+);
+```
+
 ## What's next
 
 - A Soroban NFT contract deploy helper (currently consumers deploy an OZ NFT contract themselves and pass the contract id)
 - Native USDC CCTP bridging in `plugin-bridge` (currently Allbridge only)
 - Soroban Domains *registration* in `plugin-domain` (currently read-only)
 - BlindPay full ToS + receiver creation flow
-- `agent-kit-cli` for one-line scaffolding
+- Smart-account on-chain policy verification in `runner` (currently a `TODO_SMART_ACCOUNT_POLICY_VERIFICATION` marker)
 
 ## License
 

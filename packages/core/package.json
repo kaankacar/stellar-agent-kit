@@ -13,7 +13,11 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsup src/index.ts --dts --clean --format esm --out-dir dist",
     "test": "vitest run",
@@ -34,12 +38,24 @@
     "openai": "^4.70.0"
   },
   "peerDependenciesMeta": {
-    "@anthropic-ai/sdk": { "optional": true },
-    "@langchain/core": { "optional": true },
-    "@stellar/freighter-api": { "optional": true },
-    "@creit.tech/stellar-wallets-kit": { "optional": true },
-    "ai": { "optional": true },
-    "openai": { "optional": true }
+    "@anthropic-ai/sdk": {
+      "optional": true
+    },
+    "@langchain/core": {
+      "optional": true
+    },
+    "@stellar/freighter-api": {
+      "optional": true
+    },
+    "@creit.tech/stellar-wallets-kit": {
+      "optional": true
+    },
+    "ai": {
+      "optional": true
+    },
+    "openai": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.30.0",
@@ -49,5 +65,8 @@
     "tsup": "^8.3.5",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

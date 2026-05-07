@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { Action } from "@stellar-agent-kit/core";
+import { withIdempotency, DEFAULT_IDEMPOTENCY_TTL_MS } from "@stellar-agent-kit/core";
 import { Operation } from "@stellar/stellar-sdk";
 import { buildSubmitClassic, ensureTrustline, makeAsset, requireHorizon } from "../utils";
 
@@ -7,7 +8,7 @@ export const transfer: Action = {
   name: "ASSET_TRANSFER",
   similes: ["send xlm", "send asset", "pay", "transfer asset"],
   description:
-    "Transfer XLM or any Stellar Classic asset from the agent's wallet to a destination account. Verifies destination has a trustline before submitting.",
+    "Transfer XLM or any Stellar Classic asset from the agent's wallet to a destination account. Verifies destination has a trustline before submitting. Pass `idempotencyKey` to make retries safe — the same key returns the cached result for 24h instead of re-submitting.",
   examples: [
     [
       {
@@ -23,20 +24,27 @@ export const transfer: Action = {
     issuer: z.string().optional().describe("Asset issuer G... address (required for non-native)"),
     amount: z.string().describe("Amount as a decimal string, e.g. 10.5"),
     memo: z.string().optional(),
+    idempotencyKey: z
+      .string()
+      .optional()
+      .describe(
+        "Optional retry-safe key. Same key within 24h returns the cached result instead of re-submitting.",
+      ),
   }),
-  handler: async (agent, input) => {
-    const horizon = requireHorizon(agent);
-    const asset = makeAsset({ code: input.assetCode, issuer: input.issuer });
-    await ensureTrustline(horizon, input.destination, asset);
+  handler: async (agent, input) =>
+    withIdempotency(agent.kvStore, "ASSET_TRANSFER", input.idempotencyKey, DEFAULT_IDEMPOTENCY_TTL_MS, async () => {
+      const horizon = requireHorizon(agent);
+      const asset = makeAsset({ code: input.assetCode, issuer: input.issuer });
+      await ensureTrustline(horizon, input.destination, asset);
 
-    const { hash, ledger } = await buildSubmitClassic(
-      agent,
-      (b) =>
-        b.addOperation(
-          Operation.payment({ destination: input.destination, asset, amount: input.amount }),
-        ),
-      { memo: input.memo },
-    );
-    return { hash, ledger };
-  },
+      const { hash, ledger } = await buildSubmitClassic(
+        agent,
+        (b) =>
+          b.addOperation(
+            Operation.payment({ destination: input.destination, asset, amount: input.amount }),
+          ),
+        { memo: input.memo },
+      );
+      return { hash, ledger };
+    }),
 };
