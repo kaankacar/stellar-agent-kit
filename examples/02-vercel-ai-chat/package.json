@@ -1,0 +1,30 @@
+{
+  "name": "@stellar-agent-kit/example-vercel-ai-chat",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3010",
+    "build": "next build",
+    "start": "next start -p 3010"
+  },
+  "dependencies": {
+    "@stellar-agent-kit/core": "workspace:*",
+    "@stellar-agent-kit/plugin-asset": "workspace:*",
+    "@stellar-agent-kit/plugin-data": "workspace:*",
+    "@stellar-agent-kit/plugin-defi": "workspace:*",
+    "@stellar-agent-kit/plugin-domain": "workspace:*",
+    "@stellar/stellar-sdk": "^14.0.0-rc.3",
+    "@ai-sdk/openai": "^1.0.0",
+    "ai": "^4.0.0",
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,19 @@
+/**
+ * Verified mainnet contract addresses.
+ * Source: github.com/kaankacar/stellar-defi-app README (live mainnet integrations).
+ *
+ * For testnet usage callers must override via plugin config — testnet has fragmented
+ * issuers (Circle, Blend, Etherfuse each issue their own testnet USDC). Never assume.
+ */
+export const MAINNET_CONTRACTS = {
+  blendV1Pool: "CDVQVKOY2YSXS2IC7KN6MNASSHPAO7UN2UR2ON4OI2SKMFJNVAMDX6DP",
+  reflectorXlmUsd: "CAFJZQWSED6YAWZU3GWRTOCNPPCGBN32L7QV43XX5LZLFTK6JLN34DLN",
+  xlmSac: "CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA",
+  usdc: "CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75",
+  eurc: "CDTKPWPLOURQA2SGTKTUQOWRCBZEORB4BWBOMJ3D3ZTQQSGE5F6JBQLV",
+  yusdc: "CDOFW7HNKLUZRLFZST4EW7V3AV4JI5IHMT6BPXXSY2IEFZ4NE5TWU2P4",
+  aqua: "CAUIKL3IYGMERDRUN6YSCLWVAKIFG5Q4YJHUKM4S4NJZQIA3BAS6OJPK",
+  btc: "CAO7DDJNGMOYQPRYDY5JVZ5YEK4UQBSMGLAEWRCUOTRMDSBMGWSAATDZ",
+} as const;
+
+export const SOROSWAP_API_BASE = "https://api.soroswap.finance";

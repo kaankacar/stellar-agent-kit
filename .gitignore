@@ -1,0 +1,21 @@
+node_modules/
+dist/
+.turbo/
+*.log
+.DS_Store
+.env
+.env.local
+coverage/
+.vitest/
+*.tsbuildinfo
+
+# Claude Code local state
+.claude/
+
+# Next.js build output (in examples/02-vercel-ai-chat)
+.next/
+
+# Misc
+.idea/
+.vscode/
+*.tgz

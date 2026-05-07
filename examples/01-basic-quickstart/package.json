@@ -1,0 +1,20 @@
+{
+  "name": "@stellar-agent-kit/example-basic-quickstart",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx index.ts"
+  },
+  "dependencies": {
+    "@stellar-agent-kit/core": "workspace:*",
+    "@stellar-agent-kit/plugin-asset": "workspace:*",
+    "@stellar-agent-kit/plugin-data": "workspace:*",
+    "@stellar-agent-kit/plugin-domain": "workspace:*",
+    "@stellar/stellar-sdk": "^14.0.0-rc.3"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
