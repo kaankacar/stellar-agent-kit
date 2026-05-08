@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/plugin-asset",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Classic Stellar asset operations (transfer, path payment, trustline, issuance, claimable balances) as agent actions.",
   "license": "Apache-2.0",
   "type": "module",

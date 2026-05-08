@@ -1,5 +1,30 @@
 # create-stellar-agent
 
+## 0.1.9
+
+### Patch Changes
+
+- Two changes:
+  1. **personal-agent: REPL + heartbeat now run in the same process.**
+     Previously you had to run `npm start` for the REPL and `npm run heartbeat`
+     in a separate pane to keep standing goals firing. Now `npm start` does
+     both — the REPL accepts user input, and the heartbeat polls in the
+     background and prints firings live between prompts. Set
+     `STELLAR_AGENT_HEARTBEAT=off` in `.env` to fall back to the old split-
+     process model (useful for cron / systemd deployments).
+  2. **CLI: drop `remittance-mx` and `agentic-defi` templates.**
+     Both were redundant — `remittance-mx` is a recipe better suited to the
+     `stellar-agent-kit-skills/stellar-remittance-mx` Agent Skill, and
+     `agentic-defi` was just a LangChain demo that overlapped with
+     `personal-agent`. The actions remain available; only the scaffold
+     templates are removed.
+
+  Templates list is now four:
+  - `personal-agent` (REPL + in-process heartbeat) — most users
+  - `telegram-bot` (chat over Telegram + in-process heartbeat) — phone-first
+  - `autonomous-runner` (one-shot scripted goal) — cron, CI, automation
+  - `mcp-server` (stdio MCP server) — Claude Code / Cursor integration
+
 ## 0.1.8
 
 ### Patch Changes

@@ -246,8 +246,9 @@ state:       ./state/{soul.md, memory.json, goals.json, kv.json}
 quick guide:
    1. Type any goal, e.g. "what's my XLM balance?" or "send 1 XLM to G..."
    2. Standing goals — say "watch X every 5 min and do Y" → agent persists it
-      and re-evaluates each tick. Run \`npm run heartbeat\` in a separate pane
-      to keep them firing while you sleep.
+      and re-evaluates on the in-process heartbeat. Goal firings print live
+      between your prompts. (Set STELLAR_AGENT_HEARTBEAT=off + run
+      'npm run heartbeat' in a separate pane to use a dedicated process.)
    3. Edit ./state/soul.md to teach the agent your preferences durably.
    4. The agent only sees actions on its allowlist; it cannot bypass spend caps.
 `);

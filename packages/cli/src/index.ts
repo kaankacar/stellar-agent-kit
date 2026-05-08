@@ -53,10 +53,6 @@ ${kleur.bold("Templates")}
 
 function describeTemplate(name: TemplateName): string {
   switch (name) {
-    case "remittance-mx":
-      return "Mexican-peso remittance flow (Etherfuse SPEI on/off-ramp).";
-    case "agentic-defi":
-      return "LangChain ReAct agent driving Soroswap + Blend.";
     case "mcp-server":
       return "Stdio MCP server consumable by Claude Code / Cursor.";
     case "autonomous-runner":

@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/plugin-anchor",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Stellar anchor (fiat on/off-ramp) actions. Etherfuse (MXN ↔ CETES) included; Anchor interface ready for AlfredPay, BlindPay, generic SEP-24/SEP-31.",
   "license": "Apache-2.0",
   "type": "module",

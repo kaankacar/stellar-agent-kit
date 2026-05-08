@@ -1,5 +1,11 @@
 # @stellar-agent-kit/runner
 
+## 0.1.9
+
+### Patch Changes
+
+- @stellar-agent-kit/core@0.1.9
+
 ## 0.1.8
 
 ### Patch Changes

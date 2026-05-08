@@ -55,11 +55,9 @@ export async function runWizard(): Promise<WizardAnswers> {
         name: "template",
         message: "Template",
         choices: [
-          { title: "personal-agent (CLI)", description: "Conversational personal Stellar agent in your terminal", value: "personal-agent" },
+          { title: "personal-agent (CLI)", description: "Conversational REPL + in-process heartbeat for standing goals", value: "personal-agent" },
           { title: "telegram-bot", description: "Same agent over Telegram", value: "telegram-bot" },
-          { title: "autonomous-runner", description: "Cron-driven autonomous agent loop", value: "autonomous-runner" },
-          { title: "remittance-mx", description: "Mexican peso ↔ USDC remittance via Etherfuse", value: "remittance-mx" },
-          { title: "agentic-defi", description: "LangChain ReAct agent for DeFi", value: "agentic-defi" },
+          { title: "autonomous-runner", description: "One-shot / cron-driven autonomous agent loop", value: "autonomous-runner" },
           { title: "mcp-server", description: "Stdio MCP server for Claude Code / Cursor", value: "mcp-server" },
         ],
         initial: 0,
@@ -286,11 +284,7 @@ export async function runWizard(): Promise<WizardAnswers> {
   let braveApiKey: string | undefined;
   let coinGeckoApiKey: string | undefined;
   let soroswapApiKey: string | undefined;
-  if (
-    a1.template === "personal-agent" ||
-    a1.template === "telegram-bot" ||
-    a1.template === "agentic-defi"
-  ) {
+  if (a1.template === "personal-agent" || a1.template === "telegram-bot") {
     const a5 = await prompts(
       [
         {

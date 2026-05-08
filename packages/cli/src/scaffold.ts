@@ -18,8 +18,6 @@ export const TEMPLATES = [
   "telegram-bot",
   "autonomous-runner",
   "mcp-server",
-  "remittance-mx",
-  "agentic-defi",
 ] as const;
 export type TemplateName = (typeof TEMPLATES)[number];
 

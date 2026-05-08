@@ -1,8 +1,0 @@
-STELLAR_SECRET_KEY=S...
-# Pick ONE — script auto-detects:
-OPENAI_API_KEY=sk-...
-# OPENROUTER_API_KEY=sk-or-v1-...   # free models — get key at https://openrouter.ai/keys
-
-# Soroswap API key — REQUIRED for any swap / quote action (testnet AND mainnet
-# are both gated). Get one at https://docs.soroswap.finance.
-SOROSWAP_API_KEY=

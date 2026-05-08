@@ -15,14 +15,12 @@ describe("scaffold", () => {
     await rm(workDir, { recursive: true, force: true });
   });
 
-  it("exposes 6 templates with personal-agent + telegram-bot first", () => {
+  it("exposes 4 core templates", () => {
     expect(TEMPLATES).toEqual([
       "personal-agent",
       "telegram-bot",
       "autonomous-runner",
       "mcp-server",
-      "remittance-mx",
-      "agentic-defi",
     ]);
   });
 
