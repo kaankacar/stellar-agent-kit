@@ -1,6 +1,8 @@
 # Using Stellar Agent Kit with Hermes Agent
 
-If you already run [Hermes Agent](https://github.com/NousResearch/hermes-agent) (Nous Research's personal AI assistant — successor to OpenClaw), you can plug Stellar capabilities into it without scaffolding a separate project. Hermes natively supports MCP servers and the [agentskills.io](https://agentskills.io) standard, both of which we ship.
+If you already run [Hermes Agent](https://github.com/NousResearch/hermes-agent) (Nous Research's personal AI assistant), you can plug Stellar capabilities into it without scaffolding a separate project. Hermes natively supports MCP servers and the [agentskills.io](https://agentskills.io) standard, both of which we ship.
+
+For [OpenClaw](https://github.com/openclaw/openclaw) (a separate, also-active multi-channel personal AI assistant), see [`OPENCLAW_INTEGRATION.md`](./OPENCLAW_INTEGRATION.md) — same kit, different host.
 
 This doc gets you Stellar-in-Hermes in ~5 minutes.
 
@@ -107,10 +109,6 @@ The pattern that scales:
 - **`personal-agent` or `telegram-bot`**: a separate process you run for *autonomous* Stellar work — standing goals, scheduled rebalancing, treasury monitoring. Has full runner safety (spend caps, network sandbox, human-in-loop). Doesn't need Hermes to run.
 
 They share state if you point them at the same wallet, but otherwise are independent. The runner's safety enforcement is per-process.
-
-## Migrating from OpenClaw
-
-OpenClaw is the predecessor to Hermes. If you're on OpenClaw, follow the [`hermes claw migrate`](https://hermes-agent.nousresearch.com/docs/migration/openclaw) flow first, then come back here.
 
 ## What we don't ship
 

@@ -158,7 +158,7 @@ The `personal-agent` template combines an interactive REPL with an in-process he
 
 If you already run an AI assistant with skill / MCP support, you don't need to scaffold a separate project. Two paths:
 
-1. **MCP server** — `npx create-stellar-agent stellar-mcp --template=mcp-server`, point your assistant at the resulting `index.ts`. Every action becomes an MCP tool. See [`HERMES_INTEGRATION.md`](./HERMES_INTEGRATION.md).
+1. **MCP server** — `npx create-stellar-agent stellar-mcp --template=mcp-server`, point your assistant at the resulting `index.ts`. Every action becomes an MCP tool. Step-by-step guides: [`HERMES_INTEGRATION.md`](./HERMES_INTEGRATION.md), [`OPENCLAW_INTEGRATION.md`](./OPENCLAW_INTEGRATION.md).
 2. **Drop-in skills** — [`skills/`](./skills/) holds four agentskills.io-formatted skills:
    - `stellar-agent-kit` — kit overview (action surface, MCP vs SDK, seven critical gotchas)
    - `stellar-autonomous-agent` — safe autonomous agents (layered defence, OpenRouter setup)
