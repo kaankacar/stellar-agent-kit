@@ -1,5 +1,30 @@
 # @stellar-agent-kit/all
 
+## 0.1.2
+
+### Patch Changes
+
+- Bump to 0.1.2 + publish to `latest` tag (no more alpha-only). The CLI's default version pin is now `^0.1.1` instead of `^0.1.0-alpha.1` so npm resolves to the bug-fix version. Includes the fix for the static `@langchain/core` import that crashed personal-agent at startup.
+
+  Also: removes explicit `version: 10` from `pnpm/action-setup` in CI (was conflicting with `packageManager: pnpm@10.33.4` in package.json).
+
+- Updated dependencies
+  - @stellar-agent-kit/core@0.1.2
+  - @stellar-agent-kit/adapter-mcp@0.1.2
+  - @stellar-agent-kit/plugin-anchor@0.1.2
+  - @stellar-agent-kit/plugin-asset@0.1.2
+  - @stellar-agent-kit/plugin-bridge@0.1.2
+  - @stellar-agent-kit/plugin-data@0.1.2
+  - @stellar-agent-kit/plugin-defi@0.1.2
+  - @stellar-agent-kit/plugin-defindex@0.1.2
+  - @stellar-agent-kit/plugin-domain@0.1.2
+  - @stellar-agent-kit/plugin-nft@0.1.2
+  - @stellar-agent-kit/plugin-payments@0.1.2
+  - @stellar-agent-kit/plugin-smart-wallet@0.1.2
+  - @stellar-agent-kit/plugin-soroban@0.1.2
+  - @stellar-agent-kit/plugin-trustless-work@0.1.2
+  - @stellar-agent-kit/runner@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes

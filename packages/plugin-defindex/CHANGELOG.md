@@ -1,5 +1,12 @@
 # @stellar-agent-kit/plugin-defindex
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @stellar-agent-kit/core@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes

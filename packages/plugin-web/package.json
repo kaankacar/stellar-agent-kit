@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/plugin-web",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Web-search action via Brave Search API. Lets agents read the open web — useful for fetching docs, news, contract addresses, etc. Optional plugin; requires a Brave API key.",
   "license": "Apache-2.0",
   "type": "module",

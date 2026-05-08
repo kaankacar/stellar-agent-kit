@@ -1,5 +1,13 @@
 # @stellar-agent-kit/plugin-defi
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @stellar-agent-kit/core@0.1.2
+  - @stellar-agent-kit/plugin-asset@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes

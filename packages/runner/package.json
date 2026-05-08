@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/runner",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Autonomous and scheduled agent loop with layered safety controls (allowlist, spend caps, network sandbox, human-in-loop, dry-run). Stellar-native protections via smart-account policies layered on top.",
   "license": "Apache-2.0",
   "type": "module",

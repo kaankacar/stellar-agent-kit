@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/personal",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Personal-agent layer: SoulFile (user-authored personality), MemoryStore (agent-authored working memory), StandingGoals (cron-driven instructions). Plus actions (AGENT_REMEMBER, AGENT_RECALL, AGENT_ADD_STANDING_GOAL, AGENT_PROPOSE_SOUL_EDIT, ...) for an agent that grows with the user.",
   "license": "Apache-2.0",
   "type": "module",

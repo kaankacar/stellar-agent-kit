@@ -76,7 +76,7 @@ async function copyDir(
 function applyPlaceholders(content: string, opts: ScaffoldOptions): string {
   return content
     .replaceAll("{{projectName}}", opts.projectName)
-    .replaceAll("{{stellarAgentKitVersion}}", opts.agentKitVersion ?? "^0.1.0-alpha.1");
+    .replaceAll("{{stellarAgentKitVersion}}", opts.agentKitVersion ?? "^0.1.1");
 }
 
 export async function pathExists(p: string): Promise<boolean> {
