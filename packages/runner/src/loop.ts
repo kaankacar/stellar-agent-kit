@@ -214,12 +214,20 @@ export async function runOnce(opts: RunOnceOptions): Promise<RunOnceResult> {
   const fresh = opts.resumeFromState === false;
   const messages = await loadMessages(opts, fresh);
 
+  // maxSteps must be > 1 for the LLM to (a) call a tool, (b) read its result,
+  // and (c) write a summary. With maxSteps:1 the heartbeat would announce
+  // "firing" but never report the price/answer because the loop ended on the
+  // tool call before a final assistant text was produced. 30 gives plenty of
+  // headroom for multi-step workflows (quote → swap → confirm) inside a single
+  // heartbeat firing.
+  const maxSteps = opts.maxSteps ?? 30;
+
   emit({ type: "iteration.start", iteration: 1 });
   const result = await generateText({
     model: opts.llm,
     messages,
     tools,
-    maxSteps: 1,
+    maxSteps,
   });
   messages.push(...(result.response.messages as CoreMessage[]));
   if (!fresh) {

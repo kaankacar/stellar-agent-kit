@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/plugin-trustless-work",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Trustless Work escrow-as-a-service actions: create single/multi-release escrows, fund, update milestones, approve, release, dispute, resolve.",
   "license": "Apache-2.0",
   "type": "module",

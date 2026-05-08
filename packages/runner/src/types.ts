@@ -83,6 +83,13 @@ export interface AutonomousRunResult {
 export interface RunOnceOptions extends AutonomousRunOptions {
   /** Override stored conversation messages for one-shot runs. */
   resumeFromState?: boolean;
+  /**
+   * Max LLM steps within a single runOnce. Defaults to 30 — enough headroom
+   * for the LLM to chain multiple tools (e.g. quote → swap → confirm) and
+   * still produce a summary. Set to 1 only if you specifically want a no-tool
+   * single-pass evaluation.
+   */
+  maxSteps?: number;
 }
 
 export interface RunOnceResult {

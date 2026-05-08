@@ -17,6 +17,7 @@ import {
   DataPlugin,
   AnchorPlugin,
   DomainPlugin,
+  describeKnownAssets,
 } from "@stellar-agent-kit/all/plugins";
 import {
   PersonalPlugin,
@@ -253,6 +254,7 @@ export async function buildSystemPrompt(bundle: AgentBundle, telegramName?: stri
   const soulContent = await bundle.soul.read();
   const recentMemory = await bundle.memory.recall({ limit: 8 });
   const standingGoals = await bundle.goals.list({ activeOnly: true });
+  const knownAssets = describeKnownAssets(bundle.agent.config.networkPassphrase);
   return [
     `You are ${telegramName ?? "the user"}'s personal Stellar agent on Telegram.`,
     `Wallet: ${bundle.agent.wallet.publicKey} on ${bundle.network}.`,
@@ -261,8 +263,13 @@ export async function buildSystemPrompt(bundle: AgentBundle, telegramName?: stri
     "Always describe state-changing actions before doing them. Confirm risky ones.",
     "If a tool is blocked by safety, say what was blocked and why.",
     "",
+    "When the user mentions a well-known asset by code (USDC, EURC, AQUA, etc.), use the issuer from the canonical-asset registry below. NEVER invent or guess issuer G-addresses. ASSET_TRUSTLINE_ADD auto-resolves from the registry if `issuer` is omitted; call ASSET_KNOWN_ISSUERS to look up other assets.",
+    "",
     "Use AGENT_REMEMBER to capture durable observations. Use AGENT_RECALL when you need context.",
     "Soul.md is the user's personality file — reference it for stable preferences. Suggest edits via AGENT_PROPOSE_SOUL_EDIT.",
+    "",
+    "─── canonical-asset registry ───",
+    knownAssets,
     "",
     "─── soul.md ───",
     soulContent || "(empty)",

@@ -2,18 +2,24 @@
 
 Connect any AI agent to Stellar / Soroban. A TypeScript SDK with a plugin architecture and adapters for **LangChain, Vercel AI SDK, OpenAI tool-calling, and Anthropic tool-calling**.
 
-> **Status:** `v0.1.0-alpha.1` — pre-release. 16 packages (core + 12 plugins/adapters + runner + CLI scaffolder), 116 tests, ~80 agent actions + autonomous-agent runner, end-to-end verified on testnet.
+> **Status:** `v0.1.10` on npm. 19 packages (core + 13 plugins + runner + personal + adapter + umbrella + CLI scaffolder), ~80 agent actions, end-to-end verified on testnet.
 
 ## Why
 
 The Stellar ecosystem has rich on-chain primitives for payments, DeFi, anchors (fiat rails), passkey smart wallets, and agentic-payment protocols (x402, MPP). This kit gives an LLM a typed function table covering all of them, so you can build agents that pay for APIs, swap tokens, lend, on-ramp fiat, and more — using whatever AI framework you already have.
 
-## What's in v0.1.0-alpha.1
+## What's new in 0.1.10
+
+- **Canonical-asset registry** stops LLMs from hallucinating issuer G-addresses. New `ASSET_KNOWN_ISSUERS` action returns the verified registry (Circle USDC/EURC, AQUA, yXLM, yUSDC for mainnet; Circle USDC for testnet). `ASSET_TRUSTLINE_ADD` / `ASSET_TRUSTLINE_REMOVE` auto-resolve from the registry when `issuer` is omitted, returning `resolvedIssuer` so it's visible.
+- **Heartbeat result fix.** Standing-goal heartbeats now actually report tool results — `runOnce` defaults to `maxSteps: 30` (was `1`), so the LLM has room to call tools, read results, and write a summary in one firing. Override via `RunOnceOptions.maxSteps`.
+- **Hermes / OpenClaw / Claude Code drop-in skill.** [`SKILL.md`](./SKILL.md) at repo root is a single agentskills.io-formatted file users can copy into their assistant's skills directory to teach it the kit.
+
+## Packages
 
 | Package | Actions | Purpose |
 | --- | --- | --- |
 | `@stellar-agent-kit/core` | — | `StellarAgentKit` class · `BaseWallet` interface · `KeypairWallet`, `FreighterWallet`, `WalletsKitWallet` · adapters for Vercel AI, LangChain, OpenAI, Anthropic |
-| `@stellar-agent-kit/plugin-asset` | 15 | Classic Stellar ops: transfer · path payment (strict-send + strict-receive) · trustlines · issuance · set-options · claimable balances · balance read · **Classic DEX** (manage sell/buy offer, cancel, get orderbook) · **Friendbot fund** |
+| `@stellar-agent-kit/plugin-asset` | 16 | Classic Stellar ops: transfer · path payment (strict-send + strict-receive) · trustlines (auto-resolve issuer) · issuance · set-options · claimable balances · balance read · **Classic DEX** (manage sell/buy offer, cancel, get orderbook) · **Friendbot fund** · **Canonical-issuer registry** (`ASSET_KNOWN_ISSUERS`) |
 | `@stellar-agent-kit/plugin-soroban` | 9 | Install WASM · deploy · invoke · simulate · read contract data · fetch events · **OZ Fungible token info / balance / transfer** |
 | `@stellar-agent-kit/plugin-defi` | 12 | Blend (supply / borrow / withdraw / repay / position) · Soroswap quote + swap + **LP add/remove** · Reflector price + TWAP + **multi-feed directory** |
 | `@stellar-agent-kit/plugin-data` | 7 | Stellar Expert account/asset · RPC latest ledger · Horizon tx history · **CoinGecko price / trending / token info** |
@@ -27,17 +33,32 @@ The Stellar ecosystem has rich on-chain primitives for payments, DeFi, anchors (
 | `@stellar-agent-kit/plugin-nft` | 9 | OpenZeppelin Stellar NFT trait: mint, transfer, approve, burn, balance / owner / token-uri / collection-info / **royalty info (ERC-2981)** |
 | `@stellar-agent-kit/adapter-mcp` | — | Expose the kit as a Model Context Protocol server (Claude Code, Cursor) |
 | `@stellar-agent-kit/runner` | — | **Autonomous + scheduled agent loops** with layered safety: action allowlist, per-asset spend caps, network sandbox, human-in-loop, dry-run. Vercel AI SDK as LLM abstraction. |
-| `create-stellar-agent` | — | **`npx create-stellar-agent <name>`** scaffolder. Templates: `remittance-mx`, `agentic-defi`, `mcp-server`, `autonomous-runner`. |
+| `@stellar-agent-kit/personal` | — | Soul (user-owned `soul.md`), memory (agent-authored JSON), and standing goals (durable cron-like instructions) for personal-agent setups. |
+| `@stellar-agent-kit/all` | — | All-in-one umbrella package — re-exports core, every plugin, runner, and adapters. Use this for a single dependency; switch to scoped packages for tree-shaking. |
+| `create-stellar-agent` | — | **`npx create-stellar-agent <name>`** scaffolder. Templates: `personal-agent` (interactive REPL + in-process heartbeat), `telegram-bot` (DM-driven agent on Telegram), `autonomous-runner` (cron-style standing goals), `mcp-server` (Stellar tools as MCP for Claude Code / Cursor). |
 
 ## Quickstart
 
+The fastest way to start is the CLI scaffolder — pick a template and you have a working agent in under a minute:
+
 ```bash
-pnpm add @stellar-agent-kit/core @stellar-agent-kit/plugin-asset
+npx create-stellar-agent my-agent --template=personal-agent
+cd my-agent && npm install
+# fill in STELLAR_SECRET_KEY (testnet) + an LLM key (OpenAI / Anthropic / OpenRouter)
+npm run dev
+```
+
+Templates: `personal-agent` · `telegram-bot` · `autonomous-runner` · `mcp-server`.
+
+For programmatic use:
+
+```bash
+npm install @stellar-agent-kit/all @stellar/stellar-sdk
 ```
 
 ```ts
-import { StellarAgentKit, KeypairWallet, createVercelAITools } from "@stellar-agent-kit/core";
-import { StellarAssetPlugin } from "@stellar-agent-kit/plugin-asset";
+import { StellarAgentKit, KeypairWallet, createVercelAITools } from "@stellar-agent-kit/all";
+import { StellarAssetPlugin } from "@stellar-agent-kit/all/plugins";
 import { Networks } from "@stellar/stellar-sdk";
 
 const wallet = new KeypairWallet("S...your-secret...");
@@ -56,6 +77,8 @@ Equivalent helpers exist for LangChain, OpenAI, and Anthropic:
 - `createLangchainTools(agent, agent.actions)` → `DynamicStructuredTool[]`
 - `createOpenAITools(agent, agent.actions)` → `{ tools, execute(name, args) }`
 - `createClaudeTools(agent, agent.actions)` → `{ tools, execute(name, input) }`
+
+Prefer scoped packages (`@stellar-agent-kit/core`, `@stellar-agent-kit/plugin-asset`, etc.) for tree-shaking; the umbrella `@stellar-agent-kit/all` is the simpler default.
 
 ## Live testnet smoke test
 
@@ -129,7 +152,16 @@ npx create-stellar-agent my-bot --template=autonomous-runner
 
 A 60-second path to a running, testnet-sandboxed autonomous Stellar agent driven by a free OpenRouter LLM. The kit's `runner` package wires layered safety controls (allowlist + spend caps + network sandbox + human-in-loop + dry-run) so the agent's blast radius is bounded by code, not by trust in the LLM. See [`AUTONOMOUS_AGENTS.md`](./AUTONOMOUS_AGENTS.md) for the full guide.
 
-Companion repo: [`stellar-agent-kit-skills`](https://github.com/stellar/stellar-agent-kit-skills) — Claude Code / Codex / Cursor agent-skills with curated playbooks for `stellar-remittance-mx`, `stellar-autonomous-agent`, `stellar-x402-monetize`.
+The `personal-agent` template combines an interactive REPL with an in-process heartbeat — you can say "watch XLM/USDC and tell me every 5 minutes" and the standing goal persists, fires on schedule, and prints results above the prompt without interrupting your typing.
+
+## Use the kit from your existing AI assistant (Hermes / OpenClaw / Claude Code)
+
+If you already run an AI assistant with skill / MCP support, you don't need to scaffold a separate project. Two paths:
+
+1. **MCP server** — `npx create-stellar-agent stellar-mcp --template=mcp-server`, point your assistant at the resulting `index.ts`. Every action becomes an MCP tool. See [`HERMES_INTEGRATION.md`](./HERMES_INTEGRATION.md).
+2. **Drop-in skill** — copy [`SKILL.md`](./SKILL.md) into `~/.hermes/skills/`, `~/.openclaw/skills/`, or `~/.claude/skills/`. The skill teaches the assistant the action surface, the integration modes, and the seven critical Stellar gotchas (issuer hallucination, trustline-before-transfer, simulate-before-send, mainnet opt-in, spend caps, Soroswap key, Etherfuse persistence).
+
+Companion repo: [`stellar-agent-kit-skills`](https://github.com/stellar/stellar-agent-kit-skills) — curated playbooks for `stellar-remittance-mx`, `stellar-autonomous-agent`, `stellar-x402-monetize`.
 
 ## Webhooks (production hardening)
 

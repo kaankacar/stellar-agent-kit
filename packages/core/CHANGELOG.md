@@ -1,5 +1,16 @@
 # @stellar-agent-kit/core
 
+## 0.1.10
+
+### Patch Changes
+
+- Heartbeat result fix + canonical-asset registry to prevent issuer hallucination.
+  - **Fix:** `runOnce` (used by standing-goal heartbeats) now defaults to `maxSteps: 30` instead of `1`. Previously, heartbeat goals that called a tool would terminate before producing a summary, so users saw "🫀 firing: Fetch XLM price" but no result text. Override via the new `RunOnceOptions.maxSteps` field.
+  - **New action:** `ASSET_KNOWN_ISSUERS` — returns the kit's verified-issuer registry for the active network (USDC, EURC, AQUA, yXLM, yUSDC on mainnet; Circle USDC on testnet). LLMs can call it to look up the correct G-address instead of guessing.
+  - **Auto-resolve:** `ASSET_TRUSTLINE_ADD` and `ASSET_TRUSTLINE_REMOVE` now treat `issuer` as optional and fall back to the registry. The result includes a `resolvedIssuer` field so the user/LLM can see which issuer was actually used.
+  - **System prompt:** `personal-agent` and `telegram-bot` templates now inject the registry into the LLM's context every turn (`describeKnownAssets()`) — the model is told explicitly not to invent issuer addresses.
+  - **Re-exports:** `@stellar-agent-kit/all/plugins` now exports `describeKnownAssets`, `lookupKnownAsset`, `KNOWN_ASSETS_MAINNET`, `KNOWN_ASSETS_TESTNET`, `networkTag`.
+
 ## 0.1.9
 
 ## 0.1.8

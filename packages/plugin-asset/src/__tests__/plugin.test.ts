@@ -14,7 +14,7 @@ function makeAgent(opts: { withHorizon?: boolean; networkPassphrase?: string } =
 }
 
 describe("StellarAssetPlugin registration", () => {
-  it("registers fifteen actions", () => {
+  it("registers all 16 actions including ASSET_KNOWN_ISSUERS", () => {
     const agent = makeAgent();
     expect(agent.actions.map((a) => a.name).sort()).toEqual(
       [
@@ -23,6 +23,7 @@ describe("StellarAssetPlugin registration", () => {
         "ASSET_CLAIMABLE_BALANCE_CREATE",
         "ASSET_GET_BALANCE",
         "ASSET_ISSUE",
+        "ASSET_KNOWN_ISSUERS",
         "ASSET_PATH_PAYMENT_STRICT_RECEIVE",
         "ASSET_PATH_PAYMENT_STRICT_SEND",
         "ASSET_SET_OPTIONS",

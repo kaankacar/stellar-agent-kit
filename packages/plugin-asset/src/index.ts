@@ -10,6 +10,7 @@ import { claimableBalanceCreate, claimableBalanceClaim } from "./actions/claimab
 import { manageSellOffer, manageBuyOffer, cancelOffer } from "./actions/dexOffers";
 import { getOrderbook } from "./actions/orderbook";
 import { friendbotFund } from "./actions/friendbot";
+import { knownIssuers } from "./actions/knownIssuers";
 
 export const StellarAssetPlugin: Plugin = {
   name: "stellar-asset",
@@ -30,6 +31,7 @@ export const StellarAssetPlugin: Plugin = {
     cancelOffer,
     getOrderbook,
     friendbotFund,
+    knownIssuers,
   ],
   initialize() {},
 };
@@ -51,4 +53,13 @@ export {
   cancelOffer,
   getOrderbook,
   friendbotFund,
+  knownIssuers,
 };
+export {
+  KNOWN_ASSETS_MAINNET,
+  KNOWN_ASSETS_TESTNET,
+  lookupKnownAsset,
+  describeKnownAssets,
+  networkTag,
+} from "./knownAssets";
+export type { KnownAssetEntry, StellarNetworkTag } from "./knownAssets";

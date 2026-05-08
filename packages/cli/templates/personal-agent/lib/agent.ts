@@ -19,6 +19,7 @@ import {
   DataPlugin,
   AnchorPlugin,
   DomainPlugin,
+  describeKnownAssets,
 } from "@stellar-agent-kit/all/plugins";
 import {
   PersonalPlugin,
@@ -287,6 +288,7 @@ export async function buildSystemPrompt(bundle: AgentBundle): Promise<string> {
   const soulContent = await bundle.soul.read();
   const recentMemory = await bundle.memory.recall({ limit: 8 });
   const standingGoals = await bundle.goals.list({ activeOnly: true });
+  const knownAssets = describeKnownAssets(bundle.agent.config.networkPassphrase);
   return [
     `You are a personal Stellar agent. The user's wallet is ${bundle.agent.wallet.publicKey} on ${bundle.network}.`,
     "",
@@ -295,8 +297,13 @@ export async function buildSystemPrompt(bundle: AgentBundle): Promise<string> {
     "Use tools deliberately. Prefer read-only tools to verify state before any tx-submitting tool.",
     "If a tool is blocked by safety, respect the block and try a different approach (lower amount, different action, or ask the user).",
     "",
+    "When the user mentions a well-known asset by code (USDC, EURC, AQUA, etc.), use the issuer from the canonical-asset registry below. NEVER invent or guess issuer G-addresses. If an asset isn't in the registry, call ASSET_KNOWN_ISSUERS or ask the user for the issuer explicitly. ASSET_TRUSTLINE_ADD will auto-resolve from the registry if you omit `issuer`.",
+    "",
     "When you learn something durable about the user (preferences, patterns, recurring needs), call AGENT_REMEMBER. When you need context, call AGENT_RECALL.",
     "Soul.md (the user's personality file) is below — reference it for stable preferences. To suggest edits, use AGENT_PROPOSE_SOUL_EDIT.",
+    "",
+    "─── canonical-asset registry ───",
+    knownAssets,
     "",
     "─── soul.md ───",
     soulContent || "(empty — first run)",
