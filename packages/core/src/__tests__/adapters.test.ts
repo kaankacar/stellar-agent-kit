@@ -36,9 +36,12 @@ function setup() {
 describe("adapters", () => {
   it("Vercel AI: each action becomes a tool keyed by name and is executable", async () => {
     const agent = setup();
-    const tools = createVercelAITools(agent, agent.actions);
+    const tools = (await createVercelAITools(agent, agent.actions)) as Record<
+      string,
+      { execute: (params: Record<string, unknown>, ctx: unknown) => Promise<Record<string, unknown>> }
+    >;
     expect(tools.GREET).toBeDefined();
-    const result = await tools.GREET!.execute!(
+    const result = await tools.GREET!.execute(
       { who: "agent" },
       { toolCallId: "1", messages: [] },
     );
@@ -47,7 +50,10 @@ describe("adapters", () => {
 
   it("LangChain: each action becomes a DynamicStructuredTool returning JSON", async () => {
     const agent = setup();
-    const tools = createLangchainTools(agent, agent.actions);
+    const tools = (await createLangchainTools(agent, agent.actions)) as Array<{
+      name: string;
+      invoke: (input: Record<string, unknown>) => Promise<string>;
+    }>;
     expect(tools).toHaveLength(1);
     expect(tools[0]!.name).toBe("GREET");
     const result = await tools[0]!.invoke({ who: "lc" });

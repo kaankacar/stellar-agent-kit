@@ -1,5 +1,5 @@
 import { openai } from "@ai-sdk/openai";
-import { streamText } from "ai";
+import { streamText, type ToolSet } from "ai";
 import { createVercelAITools } from "@stellar-agent-kit/core";
 import { getAgent } from "@/lib/agent";
 
@@ -9,7 +9,7 @@ export const maxDuration = 60;
 export async function POST(req: Request) {
   const { messages } = (await req.json()) as { messages: Parameters<typeof streamText>[0]["messages"] };
   const agent = getAgent();
-  const tools = createVercelAITools(agent, agent.actions);
+  const tools = (await createVercelAITools(agent, agent.actions)) as ToolSet;
 
   const result = streamText({
     model: openai("gpt-4o-mini"),

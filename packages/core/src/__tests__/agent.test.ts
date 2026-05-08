@@ -122,14 +122,14 @@ describe("executeAction", () => {
 });
 
 describe("createVercelAITools", () => {
-  it("returns one tool per action keyed by action.name", () => {
+  it("returns one tool per action keyed by action.name", async () => {
     const wallet = new KeypairWallet(TEST_SECRET);
     const agent = new StellarAgentKit(wallet, {
       rpcUrl: "https://soroban-testnet.stellar.org",
       networkPassphrase: Networks.TESTNET,
     }).use(makePlugin());
 
-    const tools = createVercelAITools(agent, agent.actions);
+    const tools = await createVercelAITools(agent, agent.actions);
     expect(Object.keys(tools)).toEqual(["ECHO"]);
     expect(tools.ECHO).toBeDefined();
   });

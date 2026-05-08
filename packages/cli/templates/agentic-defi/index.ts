@@ -30,7 +30,7 @@ const agent = new StellarAgentKit(wallet, {
   .use(DefiPlugin)
   .use(DataPlugin);
 
-const tools = createLangchainTools(agent, agent.actions);
+const tools = await createLangchainTools(agent, agent.actions);
 console.log(`Built ${tools.length} LangChain tools.`);
 
 const { ChatOpenAI } = await import("@langchain/openai");

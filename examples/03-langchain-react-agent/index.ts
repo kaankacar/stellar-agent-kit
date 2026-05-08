@@ -36,7 +36,7 @@ async function main(): Promise<void> {
     .use(StellarAssetPlugin)
     .use(DataPlugin);
 
-  const tools = createLangchainTools(agent, agent.actions);
+  const tools = await createLangchainTools(agent, agent.actions);
   console.log(`[+] Built ${tools.length} LangChain tools`);
 
   if (!process.env.OPENAI_API_KEY) {
