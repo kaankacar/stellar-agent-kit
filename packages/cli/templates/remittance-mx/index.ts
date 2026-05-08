@@ -1,3 +1,4 @@
+import "dotenv/config";
 /**
  * Mexican peso ↔ Stellar remittance flow via Etherfuse SPEI rails.
  *

@@ -15,7 +15,8 @@
     "@ai-sdk/openai": "^1.0.0",
     "@ai-sdk/anthropic": "^1.0.0",
     "ai": "^4.0.0",
-    "telegraf": "^4.16.3"
+    "telegraf": "^4.16.3",
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
     "tsx": "^4.19.2",

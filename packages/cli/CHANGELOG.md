@@ -1,5 +1,11 @@
 # create-stellar-agent
 
+## 0.1.3
+
+### Patch Changes
+
+- Fix: templates didn't load `.env` automatically — `npm start` would crash with `STELLAR_SECRET_KEY is required` even when the file was correctly written by the wizard. Adds `dotenv` as a dep to every template and `import "dotenv/config";` as the first line of every entry script.
+
 ## 0.1.2
 
 ### Patch Changes

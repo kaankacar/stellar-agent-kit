@@ -1,4 +1,5 @@
 #!/usr/bin/env tsx
+import "dotenv/config";
 /**
  * Stdio MCP server exposing Stellar Agent Kit actions.
  *

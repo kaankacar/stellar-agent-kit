@@ -1,3 +1,4 @@
+import "dotenv/config";
 /**
  * Cron-style single-shot runner. Reads conversation state from disk between
  * runs, so a cron job that fires this every 6 hours stays coherent over time.

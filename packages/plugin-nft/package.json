@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/plugin-nft",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Stellar NFT actions: mint, transfer, balance/owner queries, metadata. Wraps the audited OpenZeppelin Stellar Non-Fungible token trait — bring your own deployed contract.",
   "license": "Apache-2.0",
   "type": "module",

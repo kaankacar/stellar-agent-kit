@@ -1,3 +1,4 @@
+import "dotenv/config";
 /**
  * LangChain ReAct-style agent that uses Stellar Agent Kit tools to answer
  * portfolio / DeFi questions.

@@ -1,3 +1,4 @@
+import "dotenv/config";
 /**
  * Personal Stellar agent over Telegram.
  *

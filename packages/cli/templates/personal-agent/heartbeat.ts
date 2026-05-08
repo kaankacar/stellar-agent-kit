@@ -1,3 +1,4 @@
+import "dotenv/config";
 /**
  * Heartbeat — evaluates standing goals on a schedule.
  *
