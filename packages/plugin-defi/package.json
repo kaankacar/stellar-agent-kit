@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/plugin-defi",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "description": "Stellar DeFi protocol actions: Blend (lending), Soroswap (DEX aggregator: Soroswap AMM, Phoenix, Aquarius, SDEX), Reflector (oracle).",
   "license": "Apache-2.0",
   "type": "module",
