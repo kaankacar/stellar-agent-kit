@@ -40,7 +40,21 @@ const agent = new StellarAgentKit(wallet, {
   .use(AnchorPlugin)
   .use(DataPlugin);
 
-console.log(`Wallet: ${agent.wallet.publicKey}`);
+console.log(`
+💸 remittance-mx (testnet — Etherfuse sandbox api.sand.etherfuse.com)
+   wallet:    ${agent.wallet.publicKey.slice(0, 8)}…${agent.wallet.publicKey.slice(-4)}
+   email:     ${USER_EMAIL}
+
+quick guide:
+   1. This script runs steps 1 (create customer) + 2 (get KYC URL) on every
+      invocation. The customer_id and bank_account_id are PERMANENTLY bound
+      to the wallet at KYC time — don't regenerate them. The kit persists
+      them via the agent's KV store.
+   2. After your user completes KYC at the URL below, uncomment steps 3+4
+      in index.ts to get a quote and create an on-ramp order.
+   3. Mainnet: change etherfuseNetwork to "mainnet" + use a production key
+      from https://etherfuse.com.
+`);
 
 // 1. Create / look up customer (idempotent — IDs persist in KV)
 const createCustomer = agent.actions.find((a) => a.name === "ANCHOR_CREATE_CUSTOMER")!;

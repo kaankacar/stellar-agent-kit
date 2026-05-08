@@ -1,5 +1,11 @@
 # @stellar-agent-kit/plugin-smart-wallet
 
+## 0.1.7
+
+### Patch Changes
+
+- @stellar-agent-kit/core@0.1.7
+
 ## 0.1.6
 
 ### Patch Changes

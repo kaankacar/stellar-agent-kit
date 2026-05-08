@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/plugin-domain",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Soroban Domains lookup actions: resolve a domain name to a Stellar address and reverse-lookup an address to its primary domain.",
   "license": "Apache-2.0",
   "type": "module",

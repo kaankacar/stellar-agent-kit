@@ -182,6 +182,73 @@ async function pickLlm(): Promise<LanguageModelV1> {
   throw new Error("No LLM provider configured. Set OPENROUTER_API_KEY, OPENAI_API_KEY, or ANTHROPIC_API_KEY.");
 }
 
+/**
+ * Startup banner — printed once when the bot boots.
+ */
+export function printBanner(bundle: AgentBundle, allowedUserId: number): void {
+  const llmInfo = describeLlm();
+  const totalActions = bundle.agent.actions.length;
+  const caps = bundle.safety.spendCaps
+    .map((c) => `${c.asset} ${formatAmount(c.limit)} per ${formatWindow(c.windowMs)}`)
+    .join(", ") || "none";
+  const humanRules = bundle.safety.requireHumanFor?.aboveAtomicAmount
+    ?.map((t) => `${t.asset} > ${formatAmount(t.amount)}`)
+    .join(", ");
+  const cap = (k: string) => (process.env[k] ? "✓" : "✗");
+  const isMainnet = bundle.network === "mainnet";
+
+  console.log(`
+🤖 stellar-agent telegram-bot (${bundle.network})
+   wallet:    ${bundle.agent.wallet.publicKey.slice(0, 8)}…${bundle.agent.wallet.publicKey.slice(-4)}
+   network:   ${bundle.network}${
+     !isMainnet
+       ? "  (mainnet: set STELLAR_NETWORK=mainnet + STELLAR_AGENT_I_UNDERSTAND_THE_RISK=1 in .env)"
+       : ""
+   }
+   model:     ${llmInfo}
+   allowlisted user id: ${allowedUserId}  (only this Telegram user can interact)
+
+guardrails — edit lib/agent.ts to change:
+   • action allowlist:   ${totalActions} actions registered
+   • spend caps (24h):   ${caps}
+   • human-in-loop:      ${humanRules ? `confirm above: ${humanRules}` : "disabled"}
+   • capabilities:       Soroswap=${cap("SOROSWAP_API_KEY")}  Brave=${cap("BRAVE_API_KEY")}  CoinGecko=${cap("COINGECKO_API_KEY")}  Etherfuse=${cap("ETHERFUSE_API_KEY")}
+
+slash commands (in Telegram):  /start · /soul · /memory · /goals · /balance
+state:                          ./state/{soul.md, memory.json, goals.json, kv.json}
+
+quick guide:
+   1. Open Telegram, find your bot, send /start
+   2. Then DM any goal, e.g. "what's my balance" or "send 1 XLM to G..."
+   3. Standing goals fire on a 60s in-process heartbeat — results are DM'd.
+   4. Ctrl+C here gracefully closes the bot's long-poll connection.
+`);
+}
+
+function describeLlm(): string {
+  if (process.env.OPENROUTER_API_KEY) {
+    return `${process.env.OPENROUTER_MODEL ?? "nvidia/nemotron-3-super-120b-a12b:free"} (OpenRouter)`;
+  }
+  if (process.env.OPENAI_API_KEY) {
+    return `${process.env.OPENAI_MODEL ?? "gpt-4o-mini"} (OpenAI)`;
+  }
+  if (process.env.ANTHROPIC_API_KEY) {
+    return `${process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5"} (Anthropic)`;
+  }
+  return "(none configured)";
+}
+
+function formatAmount(atomic: string): string {
+  return BigInt(atomic).toLocaleString();
+}
+
+function formatWindow(ms: number): string {
+  const hours = ms / (60 * 60 * 1000);
+  if (hours >= 24) return `${hours / 24}d`;
+  if (hours >= 1) return `${hours}h`;
+  return `${ms / 60_000}min`;
+}
+
 export async function buildSystemPrompt(bundle: AgentBundle, telegramName?: string): Promise<string> {
   const soulContent = await bundle.soul.read();
   const recentMemory = await bundle.memory.recall({ limit: 8 });

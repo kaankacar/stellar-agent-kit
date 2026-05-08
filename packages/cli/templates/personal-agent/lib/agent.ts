@@ -206,6 +206,82 @@ async function pickLlm(): Promise<LanguageModelV1> {
   );
 }
 
+/**
+ * One-shot banner printed at startup so the user knows what guardrails are
+ * active and where to change them. Keep this in sync with the safety config
+ * built in `buildAgent()`.
+ */
+export function printBanner(bundle: AgentBundle): void {
+  const llmInfo = describeLlm();
+  const allowlist = bundle.safety.spendCaps.length > 0 ? "see lib/agent.ts" : "all actions enabled";
+  const totalActions = bundle.agent.actions.length;
+  const caps = bundle.safety.spendCaps
+    .map((c) => `${c.asset} ${formatAmount(c.limit)} per ${formatWindow(c.windowMs)}`)
+    .join(", ") || "none";
+  const humanRules = bundle.safety.requireHumanFor?.aboveAtomicAmount
+    ?.map((t) => `${t.asset} > ${formatAmount(t.amount)}`)
+    .join(", ");
+  const cap = (k: string) => (process.env[k] ? "✓" : "✗");
+  const isMainnet = bundle.network === "mainnet";
+
+  console.log(`
+🌟 stellar-agent (${bundle.network})
+   wallet:    ${bundle.agent.wallet.publicKey.slice(0, 8)}…${bundle.agent.wallet.publicKey.slice(-4)}
+   network:   ${bundle.network}${
+     !isMainnet
+       ? "  (mainnet: set STELLAR_NETWORK=mainnet + STELLAR_AGENT_I_UNDERSTAND_THE_RISK=1 in .env)"
+       : ""
+   }
+   model:     ${llmInfo}
+
+guardrails — edit lib/agent.ts to change:
+   • action allowlist:   ${totalActions} actions registered (${allowlist})
+   • spend caps (24h):   ${caps}
+   • human-in-loop:      ${humanRules ? `confirm above: ${humanRules}` : "disabled"}
+   • capabilities:       Soroswap=${cap("SOROSWAP_API_KEY")}  Brave=${cap("BRAVE_API_KEY")}  CoinGecko=${cap("COINGECKO_API_KEY")}  Etherfuse=${cap("ETHERFUSE_API_KEY")}
+
+commands:    /soul · /memory · /goals · exit
+state:       ./state/{soul.md, memory.json, goals.json, kv.json}
+
+quick guide:
+   1. Type any goal, e.g. "what's my XLM balance?" or "send 1 XLM to G..."
+   2. Standing goals — say "watch X every 5 min and do Y" → agent persists it
+      and re-evaluates each tick. Run \`npm run heartbeat\` in a separate pane
+      to keep them firing while you sleep.
+   3. Edit ./state/soul.md to teach the agent your preferences durably.
+   4. The agent only sees actions on its allowlist; it cannot bypass spend caps.
+`);
+}
+
+function describeLlm(): string {
+  if (process.env.OPENROUTER_API_KEY) {
+    return `${process.env.OPENROUTER_MODEL ?? "nvidia/nemotron-3-super-120b-a12b:free"} (OpenRouter)`;
+  }
+  if (process.env.OPENAI_API_KEY) {
+    return `${process.env.OPENAI_MODEL ?? "gpt-4o-mini"} (OpenAI)`;
+  }
+  if (process.env.ANTHROPIC_API_KEY) {
+    return `${process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5"} (Anthropic)`;
+  }
+  if (process.env.OLLAMA_BASE_URL) {
+    return `${process.env.OLLAMA_MODEL ?? "qwen2.5-coder:7b"} (Ollama, local)`;
+  }
+  return "(none configured)";
+}
+
+function formatAmount(atomic: string): string {
+  // Display as a human-readable decimal with thousands separators.
+  const n = BigInt(atomic);
+  return n.toLocaleString();
+}
+
+function formatWindow(ms: number): string {
+  const hours = ms / (60 * 60 * 1000);
+  if (hours >= 24) return `${hours / 24}d`;
+  if (hours >= 1) return `${hours}h`;
+  return `${ms / 60_000}min`;
+}
+
 export async function buildSystemPrompt(bundle: AgentBundle): Promise<string> {
   const soulContent = await bundle.soul.read();
   const recentMemory = await bundle.memory.recall({ limit: 8 });

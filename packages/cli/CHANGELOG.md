@@ -1,5 +1,25 @@
 # create-stellar-agent
 
+## 0.1.7
+
+### Patch Changes
+
+- Every template now prints a clear startup banner showing:
+  - Network (with one-line instructions on switching to mainnet safely)
+  - Wallet pubkey (truncated for skimming)
+  - Active LLM provider + model
+  - Active safety guardrails (allowlist size, spend caps, human-in-loop, dry-run)
+  - Capabilities (Soroswap / Brave / CoinGecko / Etherfuse — ✓/✗)
+  - Per-template quick guide ("how do I use this thing?")
+  - Pointer to the file/section you'd edit to change each setting
+
+  `personal-agent` and `telegram-bot` get the full banner; `autonomous-runner`,
+  `mcp-server`, `agentic-defi`, and `remittance-mx` get template-specific
+  condensed versions.
+
+  `mcp-server`'s banner is on stderr (stdout is reserved for the JSON-RPC
+  protocol).
+
 ## 0.1.6
 
 ### Patch Changes

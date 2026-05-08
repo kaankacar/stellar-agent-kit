@@ -40,4 +40,22 @@ const agent = new StellarAgentKit(wallet, {
   .use(DataPlugin)
   .use(DefiPlugin);
 
+// Banner on stderr (MCP uses stdout for JSON-RPC; we must not pollute it).
+console.error(`
+🛰️  {{projectName}} (${isMainnet ? "mainnet" : "testnet"})
+   wallet:  ${agent.wallet.publicKey.slice(0, 8)}…${agent.wallet.publicKey.slice(-4)}
+   actions: ${agent.actions.length} registered (asset, data, defi)
+
+quick guide:
+   1. Register with Claude Code:
+        claude mcp add {{projectName}} -- tsx /absolute/path/to/index.ts
+   2. Or add to Cursor/Windsurf mcp.json with command="tsx" and the absolute
+      path to this file. Set STELLAR_SECRET_KEY in env.
+   3. Add SOROSWAP_API_KEY for swap/quote actions (testnet & mainnet are gated).
+   4. To extend: edit index.ts and \`.use(...)\` more plugins from
+      @stellar-agent-kit/* (anchor, payments, runner, etc.).
+
+Listening on stdio…
+`);
+
 await runStdio({ name: "{{projectName}}", version: "0.1.0", agent });

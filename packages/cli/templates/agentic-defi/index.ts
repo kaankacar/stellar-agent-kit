@@ -36,7 +36,28 @@ const agent = new StellarAgentKit(wallet, {
   .use(DataPlugin);
 
 const tools = await createLangchainTools(agent, agent.actions);
-console.log(`Built ${tools.length} LangChain tools.`);
+
+const provider = process.env.OPENROUTER_API_KEY
+  ? "OpenRouter (free Nemotron)"
+  : process.env.OPENAI_API_KEY
+    ? "OpenAI (gpt-4o-mini)"
+    : "(none — set OPENROUTER_API_KEY or OPENAI_API_KEY)";
+
+console.log(`
+🧠 agentic-defi (testnet)
+   wallet:    ${agent.wallet.publicKey.slice(0, 8)}…${agent.wallet.publicKey.slice(-4)}
+   model:     ${provider}
+   tools:     ${tools.length} LangChain tools (asset + defi + data)
+
+quick guide:
+   1. Pass a goal as the first arg:  npm start "swap 10 XLM to USDC"
+   2. With no arg, the default is to read your XLM balance.
+   3. SOROSWAP_QUOTE / SOROSWAP_SWAP need SOROSWAP_API_KEY (testnet AND
+      mainnet are gated).
+   4. No safety guardrails are wired in this template — for production use
+      switch to the autonomous-runner template (allowlist + spend caps +
+      network sandbox + human-in-loop).
+`);
 
 const { ChatOpenAI } = await import("@langchain/openai");
 const { createToolCallingAgent, AgentExecutor } = await import("langchain/agents");

@@ -1,6 +1,6 @@
 {
   "name": "create-stellar-agent",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Scaffold a new Stellar Agent Kit project from a template (npx create-stellar-agent my-app).",
   "license": "Apache-2.0",
   "type": "module",
