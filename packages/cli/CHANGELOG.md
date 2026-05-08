@@ -1,5 +1,16 @@
 # create-stellar-agent
 
+## 0.1.5
+
+### Patch Changes
+
+- Lifecycle + correctness fixes in the personal-agent and telegram-bot templates:
+  1. **Anthropic model id**: switched default from `claude-haiku-4-5-20251001` (dated) to `claude-haiku-4-5` (auto-tracks latest revision). Both are valid per `@ai-sdk/anthropic` d.ts; the dateless form is more durable. Same change applied to the wizard's model picker shortlist.
+  2. **Telegram heartbeat overlap**: replaced `setInterval` with a recursive `setTimeout` pattern that awaits the inner work before scheduling the next tick. Long-running standing goals can no longer overlap with themselves. Adds a `heartbeatStopped` flag the SIGINT handler flips.
+  3. **Telegram graceful shutdown**: `process.once("SIGINT" | "SIGTERM", ...)` calls `bot.stop(signal)` so Telegram's long-poll connection closes cleanly. Without this, Ctrl+C orphans the connection and the next start gets rejected with 409 Conflict for ~30 seconds.
+  4. **Personal-agent heartbeat shutdown**: same SIGINT/SIGTERM pattern; sleep loop now polls every 500ms during the wait so Ctrl+C interrupts within half a second instead of waiting up to a full minute.
+  5. **Personal-agent REPL Ctrl+C**: AbortError from readline is now caught and turned into a clean exit (`bye 👋`) instead of a crash with `[error] AbortError`.
+
 ## 0.1.4
 
 ### Patch Changes

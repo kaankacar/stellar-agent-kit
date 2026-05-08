@@ -174,7 +174,7 @@ async function pickLlm(): Promise<LanguageModelV1> {
   }
   if (process.env.ANTHROPIC_API_KEY) {
     const { anthropic } = await import("@ai-sdk/anthropic");
-    return anthropic(process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5-20251001");
+    return anthropic(process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5");
   }
   throw new Error("No LLM provider configured. Set OPENROUTER_API_KEY, OPENAI_API_KEY, or ANTHROPIC_API_KEY.");
 }

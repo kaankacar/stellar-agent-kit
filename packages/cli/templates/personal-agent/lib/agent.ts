@@ -189,7 +189,7 @@ async function pickLlm(): Promise<LanguageModelV1> {
   }
   if (process.env.ANTHROPIC_API_KEY) {
     const { anthropic } = await import("@ai-sdk/anthropic");
-    return anthropic(process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5-20251001");
+    return anthropic(process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5");
   }
   if (process.env.OLLAMA_BASE_URL) {
     const { createOpenAI } = await import("@ai-sdk/openai");

@@ -240,7 +240,7 @@ export async function runWizard(): Promise<WizardAnswers> {
         { title: "(custom)", value: "__custom__" },
       ],
       anthropic: [
-        { title: "claude-haiku-4-5 (cheap, recommended)", value: "claude-haiku-4-5-20251001" },
+        { title: "claude-haiku-4-5 (cheap, recommended)", value: "claude-haiku-4-5" },
         { title: "claude-sonnet-4-6 (mid)", value: "claude-sonnet-4-6" },
         { title: "claude-opus-4-7 (premium)", value: "claude-opus-4-7" },
         { title: "(custom)", value: "__custom__" },

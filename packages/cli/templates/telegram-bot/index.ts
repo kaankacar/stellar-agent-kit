@@ -106,31 +106,56 @@ async function main() {
     }
   });
 
-  // Heartbeat — runs in-process alongside the bot listener.
-  setInterval(async () => {
-    const due = await bundle.goals.due();
-    for (const sg of due) {
-      try {
-        const result = await runOnce({
-          agent: bundle.agent,
-          llm: bundle.llm,
-          goal: sg.goal,
-          systemPrompt: await buildSystemPrompt(bundle),
-          safety: bundle.safety,
-          resumeFromState: false,
-        });
-        await bundle.goals.markRun(sg.id, result.text);
-        if (result.text) {
-          await bot.telegram.sendMessage(
-            allowedUserId,
-            `🫀 standing goal fired: ${sg.goal.slice(0, 80)}...\n\n${result.text.slice(0, 3500)}`,
-          );
+  // Heartbeat — runs in-process alongside the bot listener. Uses a recursive
+  // setTimeout instead of setInterval so a long-running standing goal can't
+  // overlap with itself when the next tick fires.
+  let heartbeatStopped = false;
+  const tickHeartbeat = async (): Promise<void> => {
+    if (heartbeatStopped) return;
+    try {
+      const due = await bundle.goals.due();
+      for (const sg of due) {
+        if (heartbeatStopped) break;
+        try {
+          const result = await runOnce({
+            agent: bundle.agent,
+            llm: bundle.llm,
+            goal: sg.goal,
+            systemPrompt: await buildSystemPrompt(bundle),
+            safety: bundle.safety,
+            resumeFromState: false,
+          });
+          await bundle.goals.markRun(sg.id, result.text);
+          if (result.text) {
+            await bot.telegram.sendMessage(
+              allowedUserId,
+              `🫀 standing goal fired: ${sg.goal.slice(0, 80)}...\n\n${result.text.slice(0, 3500)}`,
+            );
+          }
+        } catch (err) {
+          console.error(`heartbeat error for ${sg.id}:`, (err as Error).message);
         }
-      } catch (err) {
-        console.error(`heartbeat error for ${sg.id}:`, (err as Error).message);
       }
+    } catch (err) {
+      console.error("heartbeat tick failed:", (err as Error).message);
     }
-  }, HEARTBEAT_INTERVAL_MS);
+    if (!heartbeatStopped) {
+      setTimeout(tickHeartbeat, HEARTBEAT_INTERVAL_MS);
+    }
+  };
+  setTimeout(tickHeartbeat, HEARTBEAT_INTERVAL_MS);
+
+  // Graceful shutdown — Telegram needs us to call bot.stop() so it sends a
+  // proper getUpdates close to the API. Without this, Ctrl+C orphans the
+  // long-poll connection and the next start is rejected with 409 Conflict
+  // for ~30 seconds.
+  const shutdown = (signal: string) => {
+    console.log(`\n[${signal}] stopping bot...`);
+    heartbeatStopped = true;
+    bot.stop(signal);
+  };
+  process.once("SIGINT", () => shutdown("SIGINT"));
+  process.once("SIGTERM", () => shutdown("SIGTERM"));
 
   await bot.launch();
 }

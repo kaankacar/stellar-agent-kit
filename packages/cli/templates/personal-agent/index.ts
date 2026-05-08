@@ -62,6 +62,12 @@ async function main() {
 }
 
 main().catch((err) => {
+  // Ctrl+C closes the readline interface, which rejects the pending question
+  // as AbortError. Treat that as a clean exit rather than a crash.
+  if ((err as Error).name === "AbortError" || (err as { code?: string }).code === "ABORT_ERR") {
+    console.log("\nbye 👋");
+    process.exit(0);
+  }
   console.error("\n[error]", (err as Error).message);
   process.exit(1);
 });
