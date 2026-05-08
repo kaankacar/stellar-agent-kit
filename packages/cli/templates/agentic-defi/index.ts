@@ -26,6 +26,10 @@ const agent = new StellarAgentKit(wallet, {
   rpcUrl: "https://soroban-testnet.stellar.org",
   horizonUrl: "https://horizon-testnet.stellar.org",
   networkPassphrase: Networks.TESTNET,
+  apiKeys: {
+    // Required for any Soroswap quote/swap. Get one at https://docs.soroswap.finance.
+    soroswap: process.env.SOROSWAP_API_KEY ?? "",
+  },
 })
   .use(StellarAssetPlugin)
   .use(DefiPlugin)

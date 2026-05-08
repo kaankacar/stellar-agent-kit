@@ -1,5 +1,25 @@
 # @stellar-agent-kit/all
 
+## 0.1.6
+
+### Patch Changes
+
+- @stellar-agent-kit/adapter-mcp@0.1.6
+- @stellar-agent-kit/core@0.1.6
+- @stellar-agent-kit/plugin-anchor@0.1.6
+- @stellar-agent-kit/plugin-asset@0.1.6
+- @stellar-agent-kit/plugin-bridge@0.1.6
+- @stellar-agent-kit/plugin-data@0.1.6
+- @stellar-agent-kit/plugin-defi@0.1.6
+- @stellar-agent-kit/plugin-defindex@0.1.6
+- @stellar-agent-kit/plugin-domain@0.1.6
+- @stellar-agent-kit/plugin-nft@0.1.6
+- @stellar-agent-kit/plugin-payments@0.1.6
+- @stellar-agent-kit/plugin-smart-wallet@0.1.6
+- @stellar-agent-kit/plugin-soroban@0.1.6
+- @stellar-agent-kit/plugin-trustless-work@0.1.6
+- @stellar-agent-kit/runner@0.1.6
+
 ## 0.1.5
 
 ### Patch Changes

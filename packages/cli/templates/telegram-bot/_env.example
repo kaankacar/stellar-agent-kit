@@ -8,6 +8,11 @@ OPENROUTER_API_KEY=sk-or-v1-...
 # OPENAI_API_KEY=sk-...
 # ANTHROPIC_API_KEY=sk-ant-...
 
+# Soroswap API key — REQUIRED for any swap / quote action (testnet AND mainnet
+# are both gated). Get one at https://docs.soroswap.finance. Without it,
+# SOROSWAP_QUOTE and SOROSWAP_SWAP will return "Forbidden resource".
+SOROSWAP_API_KEY=
+
 # Optional
 BRAVE_API_KEY=
 COINGECKO_API_KEY=

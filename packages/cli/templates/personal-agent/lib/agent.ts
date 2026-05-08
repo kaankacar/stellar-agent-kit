@@ -114,6 +114,9 @@ export async function buildAgent(): Promise<AgentBundle> {
     networkPassphrase: isMainnet ? Networks.PUBLIC : Networks.TESTNET,
     kvStore: kv,
     apiKeys: {
+      // Soroswap API key — REQUIRED for SOROSWAP_QUOTE / SOROSWAP_SWAP. Both
+      // testnet and mainnet are gated. Get one at https://docs.soroswap.finance.
+      soroswap: process.env.SOROSWAP_API_KEY ?? "",
       brave: process.env.BRAVE_API_KEY ?? "",
       coinGeckoPro: process.env.COINGECKO_API_KEY ?? "",
       etherfuse: process.env.ETHERFUSE_API_KEY ?? "",

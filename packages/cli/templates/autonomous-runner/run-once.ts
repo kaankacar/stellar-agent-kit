@@ -63,6 +63,9 @@ const agent = new StellarAgentKit(wallet, {
   horizonUrl: "https://horizon-testnet.stellar.org",
   networkPassphrase: Networks.TESTNET,
   kvStore: kv,
+  apiKeys: {
+    soroswap: process.env.SOROSWAP_API_KEY ?? "",
+  },
 })
   .use(StellarAssetPlugin)
   .use(DataPlugin)

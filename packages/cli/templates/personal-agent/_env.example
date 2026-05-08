@@ -10,6 +10,11 @@ OPENROUTER_API_KEY=sk-or-v1-...
 # ANTHROPIC_API_KEY=sk-ant-...
 # OLLAMA_BASE_URL=http://localhost:11434/v1
 
+# Soroswap API key — REQUIRED for any swap / quote action (testnet AND mainnet
+# are both gated). Get one at https://docs.soroswap.finance. Without it,
+# SOROSWAP_QUOTE and SOROSWAP_SWAP will return "Forbidden resource".
+SOROSWAP_API_KEY=
+
 # Optional capabilities
 BRAVE_API_KEY=
 COINGECKO_API_KEY=

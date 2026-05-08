@@ -17,6 +17,7 @@ export interface WizardAnswers {
   llmApiKey?: string;
   braveApiKey?: string;
   coinGeckoApiKey?: string;
+  soroswapApiKey?: string;
   enableTelegram: boolean;
   telegramBotToken?: string;
   telegramUserId?: string;
@@ -284,9 +285,20 @@ export async function runWizard(): Promise<WizardAnswers> {
   // Optional capability keys for personal-agent / telegram-bot templates.
   let braveApiKey: string | undefined;
   let coinGeckoApiKey: string | undefined;
-  if (a1.template === "personal-agent" || a1.template === "telegram-bot") {
+  let soroswapApiKey: string | undefined;
+  if (
+    a1.template === "personal-agent" ||
+    a1.template === "telegram-bot" ||
+    a1.template === "agentic-defi"
+  ) {
     const a5 = await prompts(
       [
+        {
+          type: "password",
+          name: "soroswap",
+          message:
+            "Soroswap API key (REQUIRED for SOROSWAP_QUOTE / SOROSWAP_SWAP — both testnet and mainnet are gated; get one at https://docs.soroswap.finance; press Enter to skip if you won't use Soroswap)",
+        },
         {
           type: "password",
           name: "brave",
@@ -300,6 +312,7 @@ export async function runWizard(): Promise<WizardAnswers> {
       ],
       { onCancel },
     );
+    soroswapApiKey = a5.soroswap || undefined;
     braveApiKey = a5.brave || undefined;
     coinGeckoApiKey = a5.coinGecko || undefined;
   }
@@ -413,6 +426,7 @@ export async function runWizard(): Promise<WizardAnswers> {
     llmApiKey,
     braveApiKey,
     coinGeckoApiKey,
+    soroswapApiKey,
     enableTelegram,
     telegramBotToken,
     telegramUserId,
@@ -455,6 +469,8 @@ export function renderEnv(answers: WizardAnswers): string {
   if (answers.braveApiKey !== undefined) lines.push(`BRAVE_API_KEY=${answers.braveApiKey}`);
   if (answers.coinGeckoApiKey !== undefined)
     lines.push(`COINGECKO_API_KEY=${answers.coinGeckoApiKey}`);
+  if (answers.soroswapApiKey !== undefined)
+    lines.push(`SOROSWAP_API_KEY=${answers.soroswapApiKey}`);
   if (answers.enableTelegram) {
     lines.push("");
     lines.push(`TELEGRAM_BOT_TOKEN=${answers.telegramBotToken ?? ""}`);

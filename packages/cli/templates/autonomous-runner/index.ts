@@ -36,6 +36,11 @@ const agent = new StellarAgentKit(wallet, {
   rpcUrl: "https://soroban-testnet.stellar.org",
   horizonUrl: "https://horizon-testnet.stellar.org",
   networkPassphrase: Networks.TESTNET,
+  apiKeys: {
+    // Soroswap is gated on testnet and mainnet — without this, SOROSWAP_QUOTE
+    // returns "Forbidden resource" 403. Get a key at https://docs.soroswap.finance.
+    soroswap: process.env.SOROSWAP_API_KEY ?? "",
+  },
 })
   .use(StellarAssetPlugin)
   .use(DataPlugin)

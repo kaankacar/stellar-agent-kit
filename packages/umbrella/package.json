@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/all",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "All-in-one entry point for the Stellar Agent Kit — re-exports core, all plugins, runner, and adapters. For granular installs, use the @stellar-agent-kit/* scoped packages.",
   "license": "Apache-2.0",
   "type": "module",

@@ -1,5 +1,30 @@
 # create-stellar-agent
 
+## 0.1.6
+
+### Patch Changes
+
+- Wire the Soroswap API key into the wizard and templates. Soroswap's public API
+  (`https://api.soroswap.finance`) is gated on **both testnet and mainnet** with
+  HTTP 401 / 403 — without a key, every `SOROSWAP_QUOTE` and `SOROSWAP_SWAP`
+  action returns "Forbidden resource". The kit's plugin-defi already supports
+  the key (via `apiKeys.soroswap`); the wizard and templates didn't surface it.
+
+  Changes:
+  - Wizard adds a Soroswap API key prompt (alongside Brave / CoinGecko) for the
+    `personal-agent`, `telegram-bot`, and `agentic-defi` templates. Prompt
+    message points at https://docs.soroswap.finance for signup.
+  - `personal-agent`, `telegram-bot`, `autonomous-runner` (×2 files), and
+    `agentic-defi` templates now read `SOROSWAP_API_KEY` from `.env` and pass
+    it to `apiKeys.soroswap`.
+  - `.env.example` files updated with the `SOROSWAP_API_KEY=` line and a
+    comment noting it's required for any swap/quote.
+  - Wizard now writes `SOROSWAP_API_KEY=` to the generated `.env` when the user
+    provides a value.
+
+  Skipping the key still works — actions that don't touch Soroswap continue to
+  function. Only swap/quote calls fail until the key is set.
+
 ## 0.1.5
 
 ### Patch Changes
