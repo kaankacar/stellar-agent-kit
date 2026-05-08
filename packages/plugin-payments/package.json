@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/plugin-payments",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Agentic payments: x402 (HTTP 402, OZ Channels facilitator) and MPP charge mode for buying paid APIs.",
   "license": "Apache-2.0",
   "type": "module",

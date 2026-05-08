@@ -1,5 +1,11 @@
 # create-stellar-agent
 
+## 0.1.1
+
+### Patch Changes
+
+- Initial publish recovery — bump all packages to 0.1.1 to republish the 17 that didn't make it through the first batch (org scope was created mid-publish).
+
 ## 0.1.0
 
 ### Patch Changes
