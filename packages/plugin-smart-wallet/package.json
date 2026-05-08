@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/plugin-smart-wallet",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0",
   "description": "Stellar smart-account (passkey) wallet integration via smart-account-kit. Provides SmartAccountWallet adapter and basic actions.",
   "license": "Apache-2.0",
   "type": "module",

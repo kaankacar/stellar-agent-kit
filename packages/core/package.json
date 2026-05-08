@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/core",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0",
   "description": "Core SDK: StellarAgentKit class, wallet abstraction, plugin registry, and AI framework adapters (LangChain, Vercel AI SDK, OpenAI, Anthropic).",
   "license": "Apache-2.0",
   "type": "module",

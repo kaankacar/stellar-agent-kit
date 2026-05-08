@@ -6,7 +6,7 @@
  * goal was added. Results are written back into the goal record so the next
  * iteration sees prior context.
  */
-import { runOnce } from "stellar-agent-kit/runner";
+import { runOnce } from "@stellar-agent-kit/all/runner";
 import { buildAgent, buildSystemPrompt } from "./lib/agent";
 
 const HEARTBEAT_INTERVAL_MS = 60_000; // poll for due goals every minute

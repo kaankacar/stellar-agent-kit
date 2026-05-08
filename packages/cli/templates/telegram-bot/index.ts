@@ -8,7 +8,7 @@
  * every minute and fired when due. Results are pushed to the user as DMs.
  */
 import { Telegraf } from "telegraf";
-import { autonomousRun, runOnce } from "stellar-agent-kit/runner";
+import { autonomousRun, runOnce } from "@stellar-agent-kit/all/runner";
 import { buildAgent, buildSystemPrompt } from "./lib/agent";
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;

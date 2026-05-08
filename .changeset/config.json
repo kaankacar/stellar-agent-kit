@@ -2,7 +2,7 @@
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": false,
-  "fixed": [["@stellar-agent-kit/*", "stellar-agent-kit", "create-stellar-agent"]],
+  "fixed": [["@stellar-agent-kit/*", "create-stellar-agent"]],
   "linked": [],
   "access": "public",
   "baseBranch": "main",

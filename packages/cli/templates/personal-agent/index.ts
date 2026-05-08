@@ -7,7 +7,7 @@
  */
 import readline from "node:readline/promises";
 import { stdin, stdout } from "node:process";
-import { autonomousRun } from "stellar-agent-kit/runner";
+import { autonomousRun } from "@stellar-agent-kit/all/runner";
 import { buildAgent, buildSystemPrompt } from "./lib/agent";
 
 async function main() {

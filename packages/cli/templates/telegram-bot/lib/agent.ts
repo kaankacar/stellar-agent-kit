@@ -9,7 +9,7 @@ import {
   KeypairWallet,
   type KVStore,
   type Plugin,
-} from "stellar-agent-kit";
+} from "@stellar-agent-kit/all";
 import {
   StellarAssetPlugin,
   SorobanPlugin,
@@ -17,7 +17,7 @@ import {
   DataPlugin,
   AnchorPlugin,
   DomainPlugin,
-} from "stellar-agent-kit/plugins";
+} from "@stellar-agent-kit/all/plugins";
 import {
   PersonalPlugin,
   attachPersonal,
@@ -27,7 +27,7 @@ import {
   DEFAULT_SOUL_TEMPLATE,
 } from "@stellar-agent-kit/personal";
 import { WebPlugin } from "@stellar-agent-kit/plugin-web";
-import { SpendCap, TestnetSandbox, MainnetSandbox } from "stellar-agent-kit/runner";
+import { SpendCap, TestnetSandbox, MainnetSandbox } from "@stellar-agent-kit/all/runner";
 import type { LanguageModelV1 } from "ai";
 
 const STATE_DIR = "./state";

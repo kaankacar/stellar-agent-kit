@@ -6,12 +6,12 @@
  *   import { StellarAssetPlugin } from "@stellar-agent-kit/plugin-asset";
  *
  * Or pull everything in via this umbrella:
- *   import { StellarAgentKit, StellarAssetPlugin, autonomousRun } from "stellar-agent-kit";
+ *   import { StellarAgentKit, StellarAssetPlugin, autonomousRun } from "@stellar-agent-kit/all";
  *
  * Sub-paths are also exposed for tree-shaking:
- *   import { StellarAgentKit } from "stellar-agent-kit/core";
- *   import { StellarAssetPlugin } from "stellar-agent-kit/plugins";
- *   import { autonomousRun } from "stellar-agent-kit/runner";
+ *   import { StellarAgentKit } from "@stellar-agent-kit/all/core";
+ *   import { StellarAssetPlugin } from "@stellar-agent-kit/all/plugins";
+ *   import { autonomousRun } from "@stellar-agent-kit/all/runner";
  */
 
 // Core (StellarAgentKit, wallets, AI adapters, KVStore, withIdempotency)
