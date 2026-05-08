@@ -1,20 +1,21 @@
 # Stellar Agent Kit Skills
 
-Curated [Agent Skills](https://agentskills.io) for building on Stellar with this kit. Each skill is an agent-readable playbook (markdown) that Claude Code, OpenAI Codex, Cursor, GitHub Copilot Agent, Cline, Windsurf, Hermes, OpenClaw, and any other agentskills.io-compatible assistant can read to scaffold a Stellar project end-to-end.
-
-These complement the kit-wide [`SKILL.md`](../SKILL.md) at the repo root. The root skill teaches an agent how to *use* the kit (action surface, gotchas, integration paths). The per-workflow skills below are *playbooks* for specific domains.
+Curated [Agent Skills](https://agentskills.io) for building on Stellar with this kit. Each skill is an agent-readable playbook (markdown) that Claude Code, OpenAI Codex, Cursor, GitHub Copilot Agent, Cline, Windsurf, Hermes, OpenClaw, and any other agentskills.io-compatible assistant can read.
 
 ## Skills
 
-| Skill | What it covers |
-| --- | --- |
-| [`stellar-remittance-mx`](./stellar-remittance-mx/SKILL.md) | Mexican-peso ↔ USDC remittance via Etherfuse SPEI rails. KYC flow, customer-id permanence gotcha, sandbox vs prod URLs. |
-| [`stellar-autonomous-agent`](./stellar-autonomous-agent/SKILL.md) | Build a SAFE autonomous Stellar agent with `@stellar-agent-kit/runner`. Layered defence (smart-account policies → kit allowlist → network sandbox → human-in-loop). Free OpenRouter setup. |
-| [`stellar-x402-monetize`](./stellar-x402-monetize/SKILL.md) | Turn an HTTP API into an x402-paid endpoint that AI agents can buy from, and write agents that pay. |
+| Skill | What it covers | When the agent invokes it |
+| --- | --- | --- |
+| [`stellar-agent-kit`](./stellar-agent-kit/SKILL.md) | Kit overview — action surface, MCP vs SDK install, the seven critical Stellar gotchas | Any Stellar / Soroban request: send XLM, trustlines, swaps, contracts |
+| [`stellar-autonomous-agent`](./stellar-autonomous-agent/SKILL.md) | Build a SAFE autonomous Stellar agent with `@stellar-agent-kit/runner`. Layered defence, OpenRouter setup. | "build me an autonomous agent", "scheduled treasury bot" |
+| [`stellar-remittance-mx`](./stellar-remittance-mx/SKILL.md) | Mexican-peso ↔ USDC remittance via Etherfuse SPEI rails. KYC flow, customer-id permanence gotcha. | "remittance to Mexico", "MXN off-ramp", "Etherfuse" |
+| [`stellar-x402-monetize`](./stellar-x402-monetize/SKILL.md) | Turn an HTTP API into an x402-paid endpoint that AI agents can buy from, and write agents that pay. | "x402", "paid API for agents", "agent-to-agent payments" |
 
-## Install (no clone needed)
+Start with `stellar-agent-kit` — it's the foundation. The other three are workflow-specific playbooks that build on it.
 
-If you already have this repo checked out, the easiest way is to symlink the directory you need into your assistant's skills location:
+## Install
+
+If you've cloned this repo, the easiest path is to symlink the whole `skills/` directory:
 
 ```bash
 # Claude Code (global)
@@ -30,10 +31,11 @@ mkdir -p .cursor/skills && ln -s ../../skills .cursor/skills/stellar-agent-kit-s
 Or copy individual skill folders if you only need one:
 
 ```bash
+cp -r skills/stellar-agent-kit ~/.claude/skills/
 cp -r skills/stellar-autonomous-agent ~/.claude/skills/
 ```
 
-For users who don't have the repo locally, `git clone` the kit and symlink as above. (The standalone `kaankacar/stellar-agent-kit-skills` repo is being kept in sync for now but the source-of-truth lives here.)
+For users who don't have the repo locally, `git clone` the kit and symlink as above.
 
 ## What's a "skill"?
 

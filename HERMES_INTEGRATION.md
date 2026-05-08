@@ -55,31 +55,31 @@ Restart Hermes. Run `hermes` and ask *"what's my Stellar balance?"* — Hermes s
 
 ## 2. Install the Agent Skills
 
-The kit ships agentskills.io-compliant skills directly under [`skills/`](./skills/) in this repo, plus the kit-wide [`SKILL.md`](./SKILL.md) at the root.
+The kit ships four agentskills.io-compliant skills under [`skills/`](./skills/) in this repo. Each one is a `skills/<name>/SKILL.md` directory with optional reference files.
 
-If you've cloned this repo:
+If you've cloned this repo, symlink the whole directory:
 
 ```bash
 mkdir -p ~/.hermes/skills
 ln -s "$(pwd)/skills" ~/.hermes/skills/stellar-agent-kit-skills
-ln -s "$(pwd)/SKILL.md" ~/.hermes/skills/stellar-agent-kit
 ```
 
 Or copy individual skills:
 
 ```bash
+cp -r skills/stellar-agent-kit ~/.hermes/skills/
 cp -r skills/stellar-autonomous-agent ~/.hermes/skills/
 ```
 
-Restart Hermes. Now when you ask about *"Mexican peso remittances"* or *"autonomous Stellar agent"* or *"x402 monetization"*, Hermes will load the relevant skill into context.
+Restart Hermes. Now when you ask about *"how do I send XLM"* or *"Mexican peso remittances"* or *"autonomous Stellar agent"* or *"x402 monetization"*, Hermes will load the relevant skill into context.
 
 The included skills:
 
 | Skill | Triggers when you mention… |
 | --- | --- |
-| `stellar-agent-kit` (root `SKILL.md`) | sending XLM, USDC, trustlines, swaps, Blend, Soroban contracts, anchors |
-| `skills/stellar-remittance-mx` | remittance, Mexico, MXN, SPEI, Etherfuse, off-ramp |
+| `skills/stellar-agent-kit` | sending XLM, USDC, trustlines, swaps, Blend, Soroban contracts, anchors |
 | `skills/stellar-autonomous-agent` | autonomous, scheduled agent, safety, OpenRouter, treasury bot |
+| `skills/stellar-remittance-mx` | remittance, Mexico, MXN, SPEI, Etherfuse, off-ramp |
 | `skills/stellar-x402-monetize` | x402, paid API, monetize, agent-to-agent payments |
 
 ## 3. Mainnet posture

@@ -12,7 +12,7 @@ The Stellar ecosystem has rich on-chain primitives for payments, DeFi, anchors (
 
 - **Canonical-asset registry** stops LLMs from hallucinating issuer G-addresses. New `ASSET_KNOWN_ISSUERS` action returns the verified registry (Circle USDC/EURC, AQUA, yXLM, yUSDC for mainnet; Circle USDC for testnet). `ASSET_TRUSTLINE_ADD` / `ASSET_TRUSTLINE_REMOVE` auto-resolve from the registry when `issuer` is omitted, returning `resolvedIssuer` so it's visible.
 - **Heartbeat result fix.** Standing-goal heartbeats now actually report tool results — `runOnce` defaults to `maxSteps: 30` (was `1`), so the LLM has room to call tools, read results, and write a summary in one firing. Override via `RunOnceOptions.maxSteps`.
-- **Hermes / OpenClaw / Claude Code drop-in skill.** [`SKILL.md`](./SKILL.md) at repo root is a single agentskills.io-formatted file users can copy into their assistant's skills directory to teach it the kit.
+- **Hermes / OpenClaw / Claude Code drop-in skills.** Four agentskills.io-formatted skills under [`skills/`](./skills/) — symlink the directory into your assistant's skills folder and it learns the kit (`skills/stellar-agent-kit`) plus three workflow playbooks (autonomous agents, MX remittance, x402 monetization).
 
 ## Packages
 
@@ -159,9 +159,13 @@ The `personal-agent` template combines an interactive REPL with an in-process he
 If you already run an AI assistant with skill / MCP support, you don't need to scaffold a separate project. Two paths:
 
 1. **MCP server** — `npx create-stellar-agent stellar-mcp --template=mcp-server`, point your assistant at the resulting `index.ts`. Every action becomes an MCP tool. See [`HERMES_INTEGRATION.md`](./HERMES_INTEGRATION.md).
-2. **Drop-in skills** —
-   - [`SKILL.md`](./SKILL.md) at the repo root is the *general* kit skill. Copy or symlink into `~/.hermes/skills/`, `~/.openclaw/skills/`, or `~/.claude/skills/` — your assistant learns the action surface, integration modes, and the seven critical Stellar gotchas (issuer hallucination, trustline-before-transfer, simulate-before-send, mainnet opt-in, spend caps, Soroswap key, Etherfuse persistence).
-   - [`skills/`](./skills/) holds three workflow-specific playbooks: `stellar-autonomous-agent`, `stellar-remittance-mx`, `stellar-x402-monetize`. Symlink the whole directory or copy individual ones — see [`skills/README.md`](./skills/README.md) for install commands.
+2. **Drop-in skills** — [`skills/`](./skills/) holds four agentskills.io-formatted skills:
+   - `stellar-agent-kit` — kit overview (action surface, MCP vs SDK, seven critical gotchas)
+   - `stellar-autonomous-agent` — safe autonomous agents (layered defence, OpenRouter setup)
+   - `stellar-remittance-mx` — MXN ↔ USDC via Etherfuse SPEI
+   - `stellar-x402-monetize` — x402 paid APIs and agent buyers
+
+   Symlink the whole `skills/` directory into `~/.hermes/skills/`, `~/.claude/skills/`, etc. — see [`skills/README.md`](./skills/README.md) for install commands per assistant.
 
 ## Webhooks (production hardening)
 
