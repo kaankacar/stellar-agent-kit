@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/adapter-mcp",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Expose StellarAgentKit as a Model Context Protocol (MCP) server. Each agent action becomes one MCP tool consumable by Claude Code, Cursor, and other MCP clients.",
   "license": "Apache-2.0",
   "type": "module",

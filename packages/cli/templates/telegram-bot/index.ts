@@ -10,7 +10,7 @@ import "dotenv/config";
  */
 import { Telegraf } from "telegraf";
 import { autonomousRun, runOnce } from "@stellar-agent-kit/all/runner";
-import { buildAgent, buildSystemPrompt } from "./lib/agent";
+import { buildAgent, buildSystemPrompt, printBanner } from "./lib/agent";
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_USER_ID = process.env.TELEGRAM_USER_ID;
@@ -24,10 +24,7 @@ const HEARTBEAT_INTERVAL_MS = 60_000;
 async function main() {
   const bundle = await buildAgent();
   const bot = new Telegraf(TELEGRAM_BOT_TOKEN!);
-  console.log(
-    `🤖 stellar-agent telegram bot (${bundle.network}) — wallet ${bundle.agent.wallet.publicKey.slice(0, 8)}…`,
-  );
-  console.log(`   Allowlisted user id: ${allowedUserId}`);
+  printBanner(bundle, allowedUserId);
 
   const guard = (ctx: Parameters<Parameters<typeof bot.on>[1]>[0]) => {
     const fromId = ctx.from?.id;

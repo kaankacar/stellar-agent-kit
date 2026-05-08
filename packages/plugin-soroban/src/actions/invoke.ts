@@ -2,16 +2,25 @@ import { z } from "zod";
 import type { Action } from "@stellar-agent-kit/core";
 import { invokeContract, simulateContract } from "../utils";
 
-const argSchema: z.ZodType<unknown> = z.lazy(() =>
-  z.union([
-    z.string(),
-    z.number(),
-    z.bigint(),
-    z.boolean(),
-    z.null(),
-    z.array(argSchema),
-  ]),
-);
+/**
+ * Soroban contract args. Supports primitives plus one level of array nesting.
+ *
+ * The previous version used a recursive `z.lazy(() => z.array(argSchema))`
+ * which is technically more flexible but couldn't be expressed in JSON Schema,
+ * so zod-to-json-schema spammed every LLM tool-call with
+ *   "Recursive reference detected at #/properties/args/items/anyOf/5/items! Defaulting to any"
+ * Two warnings per call. We give up the (rare) deeper nesting in exchange for
+ * a clean log surface and a precise tool schema. Truly nested args can be
+ * passed as JSON-encoded strings.
+ */
+const argSchema = z.union([
+  z.string(),
+  z.number(),
+  z.bigint(),
+  z.boolean(),
+  z.null(),
+  z.array(z.union([z.string(), z.number(), z.bigint(), z.boolean(), z.null()])),
+]);
 
 export const invokeContractAction: Action = {
   name: "SOROBAN_INVOKE_CONTRACT",
