@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/plugin-bridge",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Cross-chain bridging actions via Allbridge Core. List supported tokens, quote a transfer, and build a raw bridge transaction (consumer signs/submits).",
   "license": "Apache-2.0",
   "type": "module",

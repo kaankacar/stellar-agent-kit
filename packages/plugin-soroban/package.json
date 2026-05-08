@@ -1,6 +1,6 @@
 {
   "name": "@stellar-agent-kit/plugin-soroban",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Soroban smart contract operations: install WASM, deploy, invoke, simulate, fetch contract data, fetch events.",
   "license": "Apache-2.0",
   "type": "module",

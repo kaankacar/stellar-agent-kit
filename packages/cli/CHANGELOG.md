@@ -1,5 +1,27 @@
 # create-stellar-agent
 
+## 0.1.4
+
+### Patch Changes
+
+- Pre-flight bug sweep before user testing:
+  - **runner: conversation-state-bleed**: subsequent `autonomousRun` / `runOnce`
+    calls were silently dropping the new `opts.goal` because the seed-only
+    branch in `loadMessages` was never taken when prior messages were stored.
+    The fix: always replace the leading system message with the current run's
+    systemPrompt, append the new user goal, and continue. `runOnce` with
+    `resumeFromState: false` now also skips saving back to KV (was polluting
+    the REPL's conversation when the heartbeat fired).
+  - **core: createLangchainTools / createVercelAITools return types**: switched
+    from `unknown[]` / `Record<string, unknown>` to the precise
+    `DynamicStructuredTool[]` / `Record<string, Tool>` types using
+    `import type` at the top (stripped at build, no runtime peer-dep cost).
+    Lets templates pass results directly to LangChain `createToolCallingAgent`
+    without lossy casts.
+  - **adapter tests**: cast the Vercel `tool.execute` ourselves rather than
+    relying on the SDK's stricter typing, since we deliberately accept any
+    zod schema shape.
+
 ## 0.1.3
 
 ### Patch Changes

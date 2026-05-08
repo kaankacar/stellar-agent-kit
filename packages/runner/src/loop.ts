@@ -94,12 +94,36 @@ function buildDescription(action: Action): string {
   return `${action.description}${similes}`.slice(0, 1023);
 }
 
-async function loadMessages(opts: AutonomousRunOptions): Promise<CoreMessage[]> {
+/**
+ * Conversation-state policy:
+ *
+ * - On a fresh state (or when `forceFresh`), seed with [system, user-goal].
+ * - On resume, load prior messages, replace the leading system message with the
+ *   current system prompt (since soul / memory / standing-goals may have
+ *   changed since last run), and append the new user goal.
+ *
+ * This means subsequent `autonomousRun` / `runOnce` calls REUSE prior
+ * assistant + tool turns (the agent stays coherent) but always see the new
+ * user instruction. Prior to this fix, subsequent calls silently dropped the
+ * new `opts.goal` because the seed-only branch was never taken.
+ */
+async function loadMessages(
+  opts: AutonomousRunOptions,
+  forceFresh = false,
+): Promise<CoreMessage[]> {
   const store = opts.state ?? opts.agent.kvStore;
-  const stored = await store.get<CoreMessage[]>(STATE_KEY);
-  if (stored && stored.length > 0) return stored;
+  const stored = forceFresh ? null : await store.get<CoreMessage[]>(STATE_KEY);
+  if (!stored || stored.length === 0) {
+    return [
+      { role: "system", content: buildSystemPrompt(opts) },
+      { role: "user", content: opts.goal },
+    ];
+  }
+  // Replace the leading system message (if any) with the fresh one.
+  const tail = stored[0]?.role === "system" ? stored.slice(1) : stored;
   return [
     { role: "system", content: buildSystemPrompt(opts) },
+    ...tail,
     { role: "user", content: opts.goal },
   ];
 }
@@ -184,15 +208,11 @@ export async function runOnce(opts: RunOnceOptions): Promise<RunOnceResult> {
       : undefined;
   const tools = buildToolMap(opts.agent, opts, emit, spendTracker);
 
-  let messages: CoreMessage[];
-  if (opts.resumeFromState !== false) {
-    messages = await loadMessages(opts);
-  } else {
-    messages = [
-      { role: "system", content: buildSystemPrompt(opts) },
-      { role: "user", content: opts.goal },
-    ];
-  }
+  // Stateless mode (resumeFromState:false) is for one-shot evaluations like
+  // standing-goal heartbeats — they don't pollute or read the persistent
+  // conversation. Stateful mode (default) loads-and-appends.
+  const fresh = opts.resumeFromState === false;
+  const messages = await loadMessages(opts, fresh);
 
   emit({ type: "iteration.start", iteration: 1 });
   const result = await generateText({
@@ -202,7 +222,9 @@ export async function runOnce(opts: RunOnceOptions): Promise<RunOnceResult> {
     maxSteps: 1,
   });
   messages.push(...(result.response.messages as CoreMessage[]));
-  await saveMessages(opts, messages);
+  if (!fresh) {
+    await saveMessages(opts, messages);
+  }
   emit({ type: "iteration.end", iteration: 1, finishReason: result.finishReason });
   emit({ type: "run.done", iterations: 1 });
   return { finishReason: result.finishReason, text: result.text ?? "", events };

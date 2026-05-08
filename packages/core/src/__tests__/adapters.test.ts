@@ -36,15 +36,13 @@ function setup() {
 describe("adapters", () => {
   it("Vercel AI: each action becomes a tool keyed by name and is executable", async () => {
     const agent = setup();
-    const tools = (await createVercelAITools(agent, agent.actions)) as Record<
-      string,
-      { execute: (params: Record<string, unknown>, ctx: unknown) => Promise<Record<string, unknown>> }
-    >;
+    const tools = await createVercelAITools(agent, agent.actions);
     expect(tools.GREET).toBeDefined();
-    const result = await tools.GREET!.execute(
-      { who: "agent" },
-      { toolCallId: "1", messages: [] },
-    );
+    const exec = tools.GREET!.execute as unknown as (
+      params: Record<string, unknown>,
+      ctx: unknown,
+    ) => Promise<Record<string, unknown>>;
+    const result = await exec({ who: "agent" }, { toolCallId: "1", messages: [] });
     expect(result).toEqual({ msg: "hi agent" });
   });
 

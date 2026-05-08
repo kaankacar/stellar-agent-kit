@@ -1,3 +1,4 @@
+import type { Tool } from "ai";
 import type { StellarAgentKit } from "../agent";
 import type { Action } from "../types/action";
 import { executeAction } from "../utils/actionExecutor";
@@ -6,20 +7,17 @@ import { executeAction } from "../utils/actionExecutor";
  * Build Vercel AI SDK tools from the agent's action surface.
  *
  * NOTE: `ai` is loaded lazily so consumers that don't use the Vercel AI SDK
- * don't need it installed. Call as `await createVercelAITools(agent, actions)`.
+ * don't need it installed. The `import type` above is stripped at build time;
+ * only the runtime `await import(...)` below stays.
+ *
+ * Call as `await createVercelAITools(agent, actions)`.
  */
 export async function createVercelAITools(
   agent: StellarAgentKit,
   actions: Action[],
-): Promise<Record<string, unknown>> {
-  const { tool } = (await import("ai")) as {
-    tool: (config: {
-      description: string;
-      parameters: unknown;
-      execute: (params: Record<string, unknown>) => Promise<unknown>;
-    }) => unknown;
-  };
-  const tools: Record<string, unknown> = {};
+): Promise<Record<string, Tool>> {
+  const mod = await import("ai");
+  const tools: Record<string, Tool> = {};
 
   if (actions.length > 128) {
     console.warn(
@@ -28,7 +26,7 @@ export async function createVercelAITools(
   }
 
   for (const action of actions.slice(0, 128)) {
-    tools[action.name] = tool({
+    tools[action.name] = mod.tool({
       description: buildDescription(action),
       parameters: action.schema,
       execute: (params: Record<string, unknown>) => executeAction(action, agent, params),
