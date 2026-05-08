@@ -7,6 +7,7 @@ Your personal Stellar agent on Telegram. Same agent, same memory, same soul as t
 - **Telegram chat interface** — DM the bot anything; the agent reasons and replies
 - **Strict user allowlist** — bot ignores everyone except `TELEGRAM_USER_ID`
 - **In-process heartbeat** — standing goals fire every minute and get DM'd to you when results matter
+- **Canonical-asset registry** — agent uses verified issuer addresses (USDC, EURC, AQUA, etc.) instead of guessing
 - **Slash commands**: `/soul`, `/memory`, `/goals`, `/balance`
 
 ## Setup
@@ -58,8 +59,10 @@ Open Telegram, find your bot, send `/start`. The agent replies.
 The bot has the same safety layers as `personal-agent`:
 - Network sandbox (refuses to start on mainnet without `STELLAR_AGENT_I_UNDERSTAND_THE_RISK=1`)
 - Spend caps default to ~10 USDC/day on mainnet
-- `requireHumanFor` on actions above 0.1 USDC — the bot will message you for confirmation before executing
+- `requireHumanFor` on actions above 0.1 USDC
 - Use a session-key wallet, not your primary
+
+⚠️ **Human-in-loop heads-up.** The default `confirm` callback prompts via stdin/readline on the host process — that's fine for `personal-agent` (you're at the terminal) but on a Telegram bot it just blocks waiting for input you can't easily provide. For Telegram-side confirmation, override `safety.confirm` in `lib/agent.ts` to DM the user via the bot and await a yes/no reply (the `bundle` already has a Telegraf instance available — wire it through). Until you do, treat `requireHumanFor` as effectively a hard-block on mainnet.
 
 Edit `lib/agent.ts` to tune the safety config.
 

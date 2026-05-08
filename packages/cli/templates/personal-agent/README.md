@@ -4,10 +4,12 @@ Your personal Stellar agent. Conversational, with memory and a soul.
 
 ## What you get
 
-- **Terminal REPL** — type freely; the agent uses ~80 Stellar actions plus web search to answer
+- **Terminal REPL with in-process heartbeat** — type freely; standing goals fire on a 60s heartbeat alongside the REPL and print results above your prompt without interrupting your typing
+- **~80 Stellar actions** plus web search at the agent's disposal
+- **Canonical-asset registry** — the agent uses verified issuer addresses (USDC, EURC, AQUA, etc.) and won't hallucinate G-addresses for trustlines
 - **`soul.md`** — your personality file (in `./state/soul.md`); the agent reads it on every turn but only suggests edits
 - **`memory.json`** — agent's working memory; tag-searchable, persists across sessions
-- **Standing goals** — "watch X, do Y" instructions the agent re-evaluates on a heartbeat
+- **Standing goals** — "watch X, do Y" instructions the agent re-evaluates on the heartbeat
 - **Layered safety** — network sandbox, spend caps, human-in-loop on mainnet
 
 ## Setup
@@ -24,8 +26,13 @@ npm install
 ## Run
 
 ```bash
-npm start         # interactive REPL
-npm run heartbeat # standing-goal evaluator (run in a separate tmux pane / systemd unit / cron)
+npm start         # interactive REPL with in-process heartbeat (default)
+```
+
+Standing goals fire automatically on a 60s heartbeat while you use the REPL. To run the heartbeat as a separate process instead (cron / systemd / dedicated pane), set `STELLAR_AGENT_HEARTBEAT=off` in `.env` and:
+
+```bash
+npm run heartbeat # dedicated standing-goal evaluator
 ```
 
 ## REPL slash commands

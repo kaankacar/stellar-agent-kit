@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSy
 import { dirname, join, relative } from "node:path";
 
 /** Versions stamped into generated package.json files. */
-export const STELLAR_AGENT_KIT_VERSION = "^0.1.0-alpha.1";
+export const STELLAR_AGENT_KIT_VERSION = "^0.1.10";
 
 export interface CopyOptions {
   /** Map of `{{placeholder}}` → replacement value, applied to every file body. */

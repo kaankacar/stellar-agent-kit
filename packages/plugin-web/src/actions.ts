@@ -99,7 +99,7 @@ export const webFetch: Action = {
   }),
   handler: async (_agent, input) => {
     const resp = await fetch(input.url, {
-      headers: { "User-Agent": "stellar-agent-kit/0.1.0 (+https://github.com/stellar/stellar-agent-kit)" },
+      headers: { "User-Agent": "stellar-agent-kit/0.1.10 (+https://github.com/kaankacar/stellar-agent-kit)" },
       signal: AbortSignal.timeout(15_000),
     });
     if (!resp.ok) {

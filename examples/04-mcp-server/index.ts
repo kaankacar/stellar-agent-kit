@@ -48,6 +48,6 @@ const agent = new StellarAgentKit(wallet, {
 
 await runStdio({
   name: "stellar-agent-kit",
-  version: "0.1.0-alpha.1",
+  version: "0.1.10",
   agent,
 });

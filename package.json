@@ -5,10 +5,10 @@
   "description": "Connect any AI agent to Stellar / Soroban — TypeScript SDK with plugin architecture for LangChain, Vercel AI SDK, OpenAI, and Anthropic tool-calling.",
   "license": "Apache-2.0",
   "author": "Stellar Development Foundation",
-  "homepage": "https://github.com/stellar/stellar-agent-kit",
+  "homepage": "https://github.com/kaankacar/stellar-agent-kit",
   "repository": {
     "type": "git",
-    "url": "https://github.com/stellar/stellar-agent-kit.git"
+    "url": "https://github.com/kaankacar/stellar-agent-kit.git"
   },
   "packageManager": "pnpm@10.33.4",
   "engines": {

@@ -32,4 +32,4 @@ Or use the granular scoped packages directly — they install independently:
 npm i @stellar-agent-kit/core @stellar-agent-kit/plugin-asset
 ```
 
-See the main repo for full docs: https://github.com/stellar/stellar-agent-kit
+See the main repo for full docs: https://github.com/kaankacar/stellar-agent-kit

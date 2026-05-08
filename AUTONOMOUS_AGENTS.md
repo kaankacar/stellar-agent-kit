@@ -138,7 +138,7 @@ await autonomousRun({
 
 ## Cron / scheduled agents
 
-`runOnce` is for cron firings. It executes a single iteration and persists conversation state in the agent's `KVStore`. Pair with a `FileKVStore` for cross-process state.
+`runOnce` is for cron firings. It executes a single one-shot evaluation and persists conversation state in the agent's `KVStore`. Pair with a `FileKVStore` for cross-process state.
 
 ```ts
 import { runOnce } from "@stellar-agent-kit/runner";
@@ -149,9 +149,12 @@ const result = await runOnce({
   goal: "Continue maintaining my XLM reserve at >= 100 XLM.",
   state: fileKvStore,           // persistent across cron firings
   resumeFromState: true,        // load prior conversation messages
+  maxSteps: 30,                 // default — enough for tool→read-result→summarize chains
   safety: { /* … */ },
 });
 ```
+
+The `maxSteps` default is `30` — enough for the LLM to call a tool, observe its result, and produce a summary inside one firing (the previous default of `1` caused heartbeat goals to terminate without text output). Bump higher for deeply chained recipes; set to `1` only for no-tool single-pass evaluations.
 
 Crontab line:
 
@@ -175,7 +178,7 @@ The `autonomous-runner` template ships with a working `FileKVStore` impl in `run
 
 For production agents that move real money, you want layers 1–4 minimum. For testnet experiments, layers 3–4 are usually enough.
 
-For deep code patterns on each layer, see the `stellar-autonomous-agent` Agent Skill at `https://github.com/stellar/stellar-agent-kit-skills`.
+For deep code patterns on each layer, see the `stellar-autonomous-agent` Agent Skill at `./skills/stellar-autonomous-agent`.
 
 ## Writing recipes (multi-step composite actions)
 
@@ -229,4 +232,4 @@ Each safety control should have a test. The runner package's own tests demonstra
 
 ## Companion skill
 
-Once this guide is internalized, the matching Agent Skill at `https://github.com/stellar/stellar-agent-kit-skills/tree/main/stellar-autonomous-agent` is what AI assistants invoke to scaffold autonomous agents. The skill cites this file; this file is the authoritative API reference.
+Once this guide is internalized, the matching Agent Skill at [`./skills/stellar-autonomous-agent/SKILL.md`](./skills/stellar-autonomous-agent/SKILL.md) is what AI assistants invoke to scaffold autonomous agents. The skill cites this file; this file is the authoritative API reference.

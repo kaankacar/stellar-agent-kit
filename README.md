@@ -159,9 +159,9 @@ The `personal-agent` template combines an interactive REPL with an in-process he
 If you already run an AI assistant with skill / MCP support, you don't need to scaffold a separate project. Two paths:
 
 1. **MCP server** — `npx create-stellar-agent stellar-mcp --template=mcp-server`, point your assistant at the resulting `index.ts`. Every action becomes an MCP tool. See [`HERMES_INTEGRATION.md`](./HERMES_INTEGRATION.md).
-2. **Drop-in skill** — copy [`SKILL.md`](./SKILL.md) into `~/.hermes/skills/`, `~/.openclaw/skills/`, or `~/.claude/skills/`. The skill teaches the assistant the action surface, the integration modes, and the seven critical Stellar gotchas (issuer hallucination, trustline-before-transfer, simulate-before-send, mainnet opt-in, spend caps, Soroswap key, Etherfuse persistence).
-
-Companion repo: [`stellar-agent-kit-skills`](https://github.com/stellar/stellar-agent-kit-skills) — curated playbooks for `stellar-remittance-mx`, `stellar-autonomous-agent`, `stellar-x402-monetize`.
+2. **Drop-in skills** —
+   - [`SKILL.md`](./SKILL.md) at the repo root is the *general* kit skill. Copy or symlink into `~/.hermes/skills/`, `~/.openclaw/skills/`, or `~/.claude/skills/` — your assistant learns the action surface, integration modes, and the seven critical Stellar gotchas (issuer hallucination, trustline-before-transfer, simulate-before-send, mainnet opt-in, spend caps, Soroswap key, Etherfuse persistence).
+   - [`skills/`](./skills/) holds three workflow-specific playbooks: `stellar-autonomous-agent`, `stellar-remittance-mx`, `stellar-x402-monetize`. Symlink the whole directory or copy individual ones — see [`skills/README.md`](./skills/README.md) for install commands.
 
 ## Webhooks (production hardening)
 
